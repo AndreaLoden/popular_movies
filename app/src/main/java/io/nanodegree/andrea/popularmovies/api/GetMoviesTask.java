@@ -19,6 +19,8 @@ public class GetMoviesTask extends AsyncTask<URL, Void, String> {
 
     public interface MoviesResults {
         void onMoviesReady(List<Movie> movies);
+
+        void onError();
     }
 
     private MoviesResults moviesResultsNotifier;
@@ -43,9 +45,9 @@ public class GetMoviesTask extends AsyncTask<URL, Void, String> {
     protected void onPostExecute(String string) {
         if (string != null && !string.isEmpty()) {
             List<Movie> movies = JsonUtils.parseMovieListJson(string);
-            if (moviesResultsNotifier != null) {
-                moviesResultsNotifier.onMoviesReady(movies);
-            }
+            moviesResultsNotifier.onMoviesReady(movies);
+        } else {
+            moviesResultsNotifier.onError();
         }
     }
 }
