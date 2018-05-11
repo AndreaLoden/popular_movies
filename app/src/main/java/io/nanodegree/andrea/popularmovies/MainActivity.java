@@ -9,11 +9,18 @@ import io.nanodegree.andrea.popularmovies.api.GetMoviesTask;
 import io.nanodegree.andrea.popularmovies.api.NetworkUtils;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GetMoviesTask.MoviesResults {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        }
+
+        new GetMoviesTask(this).execute(NetworkUtils.buildPopularMoviesUrl());
+    }
+
+    @Override
+    public void onMoviesReady(List<Movie> movies) {
+
+    }
 }
