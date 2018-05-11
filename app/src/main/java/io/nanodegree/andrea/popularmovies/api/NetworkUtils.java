@@ -26,7 +26,7 @@ public class NetworkUtils {
     private final static String API_KEY_FIELD = "api_key";
 
     //TODO add here a calid token to query the Movie DB
-    private final static String TOKEN = "";
+    private final static String TOKEN = "220e2ce24c38e16c4eafe5708e0e39d4";
 
     /**
      * Builds the URL used to query the Movie DB for popular movies.

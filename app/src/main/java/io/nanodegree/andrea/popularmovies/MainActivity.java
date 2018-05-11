@@ -2,6 +2,7 @@ package io.nanodegree.andrea.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -27,12 +28,22 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
         errorView = findViewById(R.id.errorView);
         progressBar = findViewById(R.id.progress_bar);
 
+        int spanCount = getSpanCount();
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
+
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.movie_item_margin);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(spanCount, spacingInPixels));
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setHasFixedSize(true);
+
         new GetMoviesTask(this).execute(NetworkUtils.buildPopularMoviesUrl());
     }
 
     @Override
     public void onMoviesReady(List<Movie> movies) {
         if (movies.size() > 0) {
+            recyclerView.setAdapter(new MoviesAdapter(movies));
             showContent();
         } else {
             showNoItems();
@@ -42,6 +53,12 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
     @Override
     public void onError() {
         showError();
+    }
+
+    //Internal methods
+
+    private int getSpanCount() {
+        return getResources().getInteger(R.integer.span_count);
     }
 
     //Handle visibility of views
