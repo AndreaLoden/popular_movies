@@ -45,7 +45,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
 
     @Override
     public void onBindViewHolder(@NonNull MovieItemViewHolder holder, int position) {
-        holder.bind(movies.get(position).getImageThumbnailUrl());
+        holder.bind(movies.get(position));
     }
 
     @Override
@@ -56,6 +56,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
     class MovieItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView moviePoster;
+        Movie movie;
 
         MovieItemViewHolder(View itemView) {
             super(itemView);
@@ -64,13 +65,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
             itemView.setOnClickListener(this);
         }
 
-        void bind(String imageUrl) {
-            Picasso.get().load("http:/image.tmdb.org/t/p/w500" + imageUrl).into(moviePoster);
+        void bind(Movie movie) {
+            this.movie = movie;
+            Picasso.get().load("http:/image.tmdb.org/t/p/w500" + movie.getImageThumbnailUrl()).into(moviePoster);
         }
 
         @Override
         public void onClick(View v) {
-            context.startActivity(new Intent(context, DetailActivity.class));
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra(DetailActivity.MOVIE_EXTRA, movie);
+            context.startActivity(intent);
         }
     }
 }
