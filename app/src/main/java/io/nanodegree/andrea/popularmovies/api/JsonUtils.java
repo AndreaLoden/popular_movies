@@ -1,7 +1,6 @@
 package io.nanodegree.andrea.popularmovies.api;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +20,13 @@ import io.nanodegree.andrea.popularmovies.model.Movie;
  */
 public class JsonUtils {
 
+    private static final String MOVIE_RESULTS = "results";
+    private static final String MOVIE_TITLE = "title";
+    private static final String MOVIE_PATH = "poster_path";
+    private static final String MOVIE_OVERVIEW = "overview";
+    private static final String MOVIE_AVERAGE = "vote_average";
+    private static final String MOVIE_RELEASE_DATE = "release_date";
+
 
     @NonNull
     public static List<Movie> parseMovieListJson(String jsonRoot) {
@@ -28,7 +34,7 @@ public class JsonUtils {
 
         try {
             JSONObject jsonMovies = new JSONObject(jsonRoot);
-            JSONArray jsonArray = jsonMovies.getJSONArray("results");
+            JSONArray jsonArray = jsonMovies.getJSONArray(MOVIE_RESULTS);
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 movies.add(parseSingleMovieJson((JSONObject) jsonArray.get(i)));
@@ -41,14 +47,13 @@ public class JsonUtils {
         return movies;
     }
 
-    @Nullable
     private static Movie parseSingleMovieJson(JSONObject jsonElement) throws JSONException {
 
         return new Movie(
-                jsonElement.getString("title"),
-                jsonElement.getString("poster_path"),
-                jsonElement.getString("overview"),
-                jsonElement.getString("vote_average"),
-                jsonElement.getString("release_date"));
+                jsonElement.getString(MOVIE_TITLE),
+                jsonElement.getString(MOVIE_PATH),
+                jsonElement.getString(MOVIE_OVERVIEW),
+                jsonElement.getString(MOVIE_AVERAGE),
+                jsonElement.getString(MOVIE_RELEASE_DATE));
     }
 }
