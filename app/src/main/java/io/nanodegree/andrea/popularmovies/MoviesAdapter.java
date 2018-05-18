@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.nanodegree.andrea.popularmovies.model.Movie;
@@ -27,9 +28,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
     private List<Movie> movies;
     private Context context;
 
-    MoviesAdapter(@NonNull Context context, @NonNull List<Movie> movies) {
+    MoviesAdapter(@NonNull Context context) {
         this.context = context;
-        this.movies = movies;
+        movies = new ArrayList<>();
     }
 
     @NonNull
@@ -51,6 +52,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
     @Override
     public int getItemCount() {
         return movies.size();
+    }
+
+    public void setData(List<Movie> movies) {
+        this.movies.clear();
+        this.movies.addAll(movies);
     }
 
     class MovieItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

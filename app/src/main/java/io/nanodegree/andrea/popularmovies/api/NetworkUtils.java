@@ -22,7 +22,7 @@ public class NetworkUtils {
 
     private final static String MOVIES_DB_BASE_URL = "https://api.themoviedb.org/3/movie/";
     private final static String POPULAR_MOVIES_SUFFIX = "popular";
-    private final static String TOP_RATED_MOVIES_SUFFIX = "rated";
+    private final static String TOP_RATED_MOVIES_SUFFIX = "top_rated";
     private final static String API_KEY_FIELD = "api_key";
 
     //TODO add here a calid token to query the Movie DB

@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
     RecyclerView recyclerView;
     TextView errorView;
     View progressBar;
+    MoviesAdapter moviesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,22 +29,25 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
         errorView = findViewById(R.id.errorView);
         progressBar = findViewById(R.id.progress_bar);
 
-        int spanCount = getSpanCount();
+        moviesAdapter = new MoviesAdapter(this);
 
+        int spanCount = getSpanCount();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.movie_item_margin);
         recyclerView.addItemDecoration(new SpacesItemDecoration(spanCount, spacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(moviesAdapter);
 
-        new GetMoviesTask(this).execute(NetworkUtils.buildPopularMoviesUrl());
+        getTopRatedMoviesTask();
     }
 
     @Override
     public void onMoviesReady(List<Movie> movies) {
         if (movies.size() > 0) {
-            recyclerView.setAdapter(new MoviesAdapter(this, movies));
+            moviesAdapter.setData(movies);
+            moviesAdapter.notifyDataSetChanged();
             showContent();
         } else {
             showNoItems();
@@ -53,6 +57,14 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
     @Override
     public void onError() {
         showError();
+    }
+
+    private void getPopularMoviesTask(){
+        new GetMoviesTask(this).execute(NetworkUtils.buildPopularMoviesUrl());
+    }
+
+    private void getTopRatedMoviesTask(){
+        new GetMoviesTask(this).execute(NetworkUtils.buildTopRatedMoviesUrl());
     }
 
     //Internal methods
