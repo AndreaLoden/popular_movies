@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
         moviesAdapter = new MoviesAdapter(this);
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(moviesAdapter);
 
-        getTopRatedMoviesTask();
+        getPopularMoviesTask();
     }
 
     @Override
@@ -72,11 +74,36 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
     }
 
     private void getPopularMoviesTask() {
+
+        getSupportActionBar().setTitle("Popular movies");
         new GetMoviesTask(this).execute(NetworkUtils.buildPopularMoviesUrl());
     }
 
     private void getTopRatedMoviesTask() {
+        getSupportActionBar().setTitle("Top rated movies");
         new GetMoviesTask(this).execute(NetworkUtils.buildTopRatedMoviesUrl());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.popular_movie:
+                getPopularMoviesTask();
+                return true;
+            case R.id.top_rated_movies:
+                getTopRatedMoviesTask();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //Internal methods
