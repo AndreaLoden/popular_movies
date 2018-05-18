@@ -26,7 +26,7 @@ public class JsonUtils {
     private static final String MOVIE_OVERVIEW = "overview";
     private static final String MOVIE_AVERAGE = "vote_average";
     private static final String MOVIE_RELEASE_DATE = "release_date";
-
+    private static final String MOVIES_DB_BASE_THUMBNAIL_URL = "http:/image.tmdb.org/t/p/w500";
 
     @NonNull
     public static List<Movie> parseMovieListJson(String jsonRoot) {
@@ -51,7 +51,7 @@ public class JsonUtils {
 
         return new Movie(
                 jsonElement.getString(MOVIE_TITLE),
-                jsonElement.getString(MOVIE_PATH),
+                MOVIES_DB_BASE_THUMBNAIL_URL + jsonElement.getString(MOVIE_PATH),
                 jsonElement.getString(MOVIE_OVERVIEW),
                 jsonElement.getString(MOVIE_AVERAGE),
                 jsonElement.getString(MOVIE_RELEASE_DATE));

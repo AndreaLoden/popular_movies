@@ -18,8 +18,15 @@ android {
 }
 
 dependencies {
+    //Support libraries
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    //Image loading
     implementation 'com.squareup.picasso:picasso:2.71828'
+    
+    //Butterknife for view binding
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

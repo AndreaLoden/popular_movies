@@ -67,7 +67,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
 
         void bind(Movie movie) {
             this.movie = movie;
-            Picasso.get().load("http:/image.tmdb.org/t/p/w500" + movie.getImageThumbnailUrl()).into(moviePoster);
+            Picasso.get().load(movie.getImageThumbnailUrl()).into(moviePoster);
         }
 
         @Override
