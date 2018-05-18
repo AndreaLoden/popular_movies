@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.detail_activity);
+
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
@@ -51,11 +53,23 @@ public class DetailActivity extends AppCompatActivity {
             Movie movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
 
             getSupportActionBar().setTitle(movie.getOriginalTitle());
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
             Picasso.get().load(movie.getImageThumbnailUrl()).into(posterImageView);
             plotTextView.setText(movie.getPlotSynopsis());
             releaseDateTextView.setText(movie.getReleaseDate());
             ratingTextView.setText(getString(R.string.rating_out_of, movie.getUserRating()));
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) // Press Back Icon
+        {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

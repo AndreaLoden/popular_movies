@@ -4,30 +4,42 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.nanodegree.andrea.popularmovies.api.GetMoviesTask;
 import io.nanodegree.andrea.popularmovies.api.NetworkUtils;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 
 public class MainActivity extends AppCompatActivity implements GetMoviesTask.MoviesResults {
 
+    @BindView(R.id.recycler_view_movies)
     RecyclerView recyclerView;
+
+    @BindView(R.id.errorView)
     TextView errorView;
+
+    @BindView(R.id.progress_bar)
     View progressBar;
+
+    @BindView(R.id.my_toolbar)
+    Toolbar toolbar;
+
     MoviesAdapter moviesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        recyclerView = findViewById(R.id.recycler_view_movies);
-        errorView = findViewById(R.id.errorView);
-        progressBar = findViewById(R.id.progress_bar);
+        toolbar.setTitle(R.string.app_name);
+        setSupportActionBar(toolbar);
 
         moviesAdapter = new MoviesAdapter(this);
 
@@ -59,11 +71,11 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
         showError();
     }
 
-    private void getPopularMoviesTask(){
+    private void getPopularMoviesTask() {
         new GetMoviesTask(this).execute(NetworkUtils.buildPopularMoviesUrl());
     }
 
-    private void getTopRatedMoviesTask(){
+    private void getTopRatedMoviesTask() {
         new GetMoviesTask(this).execute(NetworkUtils.buildTopRatedMoviesUrl());
     }
 
