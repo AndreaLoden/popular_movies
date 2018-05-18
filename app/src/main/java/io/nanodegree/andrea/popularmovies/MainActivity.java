@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
     @Override
     public void onMoviesReady(List<Movie> movies) {
         if (movies.size() > 0) {
-            recyclerView.setAdapter(new MoviesAdapter(movies));
+            recyclerView.setAdapter(new MoviesAdapter(this, movies));
             showContent();
         } else {
             showNoItems();

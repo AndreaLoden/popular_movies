@@ -1,6 +1,7 @@
 package io.nanodegree.andrea.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,8 +25,10 @@ import io.nanodegree.andrea.popularmovies.model.Movie;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemViewHolder> {
 
     private List<Movie> movies;
+    private Context context;
 
-    public MoviesAdapter(@NonNull List<Movie> movies) {
+    MoviesAdapter(@NonNull Context context, @NonNull List<Movie> movies) {
+        this.context = context;
         this.movies = movies;
     }
 
@@ -50,10 +53,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
         return movies.size();
     }
 
-    /**
-     * Cache of the children views for a grid item.
-     */
-    class MovieItemViewHolder extends RecyclerView.ViewHolder {
+    class MovieItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView moviePoster;
 
@@ -61,10 +61,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
             super(itemView);
 
             moviePoster = itemView.findViewById(R.id.movie_poster);
+            itemView.setOnClickListener(this);
         }
 
         void bind(String imageUrl) {
             Picasso.get().load("http:/image.tmdb.org/t/p/w500" + imageUrl).into(moviePoster);
+        }
+
+        @Override
+        public void onClick(View v) {
+            context.startActivity(new Intent(context, DetailActivity.class));
         }
     }
 }

@@ -1,5 +1,7 @@
 package io.nanodegree.andrea.popularmovies.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
  * for Evenly GmbH
@@ -7,7 +9,7 @@ package io.nanodegree.andrea.popularmovies.model;
  * Copyright (c) 2018 Evenly GmbH,
  * all rights reserved
  */
-public class Movie {
+public class Movie implements Serializable {
     private String originalTitle;
     private String imageThumbnailUrl;
     private String plotSynopsis;
