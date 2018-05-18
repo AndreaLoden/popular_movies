@@ -25,8 +25,8 @@ public class NetworkUtils {
     private final static String TOP_RATED_MOVIES_SUFFIX = "top_rated";
     private final static String API_KEY_FIELD = "api_key";
 
-    //TODO add here a calid token to query the Movie DB
-    private final static String TOKEN = "220e2ce24c38e16c4eafe5708e0e39d4";
+    //TODO add here a valid token to query the Movie DB
+    private final static String TOKEN = "";
 
     /**
      * Builds the URL used to query the Movie DB for popular movies.
