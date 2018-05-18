@@ -3,6 +3,7 @@ package io.nanodegree.andrea.popularmovies;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,18 +36,21 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.tv_rating_content)
     TextView ratingTextView;
 
+    @BindView(R.id.my_toolbar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.detail_activity);
-
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
         if (getIntent() != null && getIntent().hasExtra(MOVIE_EXTRA)) {
             Movie movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
 
-            setTitle(movie.getOriginalTitle());
+            getSupportActionBar().setTitle(movie.getOriginalTitle());
             Picasso.get().load(movie.getImageThumbnailUrl()).into(posterImageView);
             plotTextView.setText(movie.getPlotSynopsis());
             releaseDateTextView.setText(movie.getReleaseDate());
