@@ -1,5 +1,7 @@
 package io.nanodegree.andrea.popularmovies.model;
 
+import com.squareup.moshi.Json;
+
 import java.io.Serializable;
 
 /**
@@ -10,37 +12,25 @@ import java.io.Serializable;
  * all rights reserved
  */
 public class Movie implements Serializable {
-    private String originalTitle;
+
+    private static final String MOVIES_DB_BASE_THUMBNAIL_URL = "http:/image.tmdb.org/t/p/w500";
+
+    @Json(name = "title")
+    public String originalTitle;
+
+    @Json(name = "poster_path")
     private String imageThumbnailUrl;
-    private String plotSynopsis;
-    private String userRating;
-    private String releaseDate;
 
-    public Movie(String originalTitle, String imageThumbnailUrl, String plotSynopsis, String userRating, String releaseDate) {
-        this.originalTitle = originalTitle;
-        this.imageThumbnailUrl = imageThumbnailUrl;
-        this.plotSynopsis = plotSynopsis;
-        this.userRating = userRating;
-        this.releaseDate = releaseDate;
-    }
+    @Json(name = "overview")
+    public String plotSynopsis;
 
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
+    @Json(name = "vote_average")
+    public String userRating;
+
+    @Json(name = "release_date")
+    public String releaseDate;
 
     public String getImageThumbnailUrl() {
-        return imageThumbnailUrl;
-    }
-
-    public String getPlotSynopsis() {
-        return plotSynopsis;
-    }
-
-    public String getUserRating() {
-        return userRating;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
+        return MOVIES_DB_BASE_THUMBNAIL_URL + imageThumbnailUrl;
     }
 }

@@ -35,13 +35,13 @@ public class DetailActivity extends AppCompatActivity {
         if (getIntent() != null && getIntent().hasExtra(MOVIE_EXTRA)) {
             Movie movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
 
-            getSupportActionBar().setTitle(movie.getOriginalTitle());
+            getSupportActionBar().setTitle(movie.originalTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             Picasso.get().load(movie.getImageThumbnailUrl()).into(binding.imageIv);
-            binding.tvPlotContent.setText(movie.getPlotSynopsis());
-            binding.tvReleaseDateContent.setText(movie.getReleaseDate());
-            binding.tvRatingContent.setText(getString(R.string.rating_out_of, movie.getUserRating()));
+            binding.tvPlotContent.setText(movie.plotSynopsis);
+            binding.tvReleaseDateContent.setText(movie.releaseDate);
+            binding.tvRatingContent.setText(getString(R.string.rating_out_of, movie.userRating));
         }
     }
 
