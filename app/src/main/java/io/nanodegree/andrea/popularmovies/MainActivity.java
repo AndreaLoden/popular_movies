@@ -6,7 +6,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.io.IOException;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,25 +14,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import io.nanodegree.andrea.popularmovies.databinding.ActivityMainBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 import io.nanodegree.andrea.popularmovies.model.MovieContainer;
-import io.nanodegree.andrea.popularmovies.service.PopularMoviesService;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import io.nanodegree.andrea.popularmovies.service.MovieDbClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements Callback<MovieContainer> {
 
     ActivityMainBinding binding;
 
     MoviesAdapter moviesAdapter;
-
-    Retrofit retrofit;
-    PopularMoviesService popularMoviesService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,40 +43,18 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
         binding.recyclerViewMovies.setHasFixedSize(true);
         binding.recyclerViewMovies.setAdapter(moviesAdapter);
 
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public okhttp3.Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        HttpUrl url = request.url().newBuilder().addQueryParameter("api_key", "").build();
-                        request = request.newBuilder().url(url).build();
-                        return chain.proceed(request);
-                    }
-                }).build();
-
-        // Trailing slash is needed
-        final String BASE_URL = "https://api.themoviedb.org/3/movie/";
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        popularMoviesService = retrofit.create(PopularMoviesService.class);
-
-        Call<MovieContainer> popularMoviesCall = popularMoviesService.listPopularMovies();
+        Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().listPopularMovies();
         popularMoviesCall.enqueue(this);
     }
 
 
     private void getPopularMovies() {
-        Call<MovieContainer> popularMoviesCall = popularMoviesService.listPopularMovies();
+        Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().listPopularMovies();
         popularMoviesCall.enqueue(this);
     }
 
     private void getTopRatedMovies() {
-        Call<MovieContainer> topRatedMoviesCall = popularMoviesService.listTopRatedMovies();
+        Call<MovieContainer> topRatedMoviesCall = MovieDbClient.getPopularMoviesService().listTopRatedMovies();
         topRatedMoviesCall.enqueue(this);
     }
 
