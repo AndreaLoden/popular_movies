@@ -1,47 +1,33 @@
 package io.nanodegree.andrea.popularmovies;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
 import io.nanodegree.andrea.popularmovies.api.GetMoviesTask;
 import io.nanodegree.andrea.popularmovies.api.NetworkUtils;
+import io.nanodegree.andrea.popularmovies.databinding.ActivityMainBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 
 public class MainActivity extends AppCompatActivity implements GetMoviesTask.MoviesResults {
 
-    @BindView(R.id.recycler_view_movies)
-    RecyclerView recyclerView;
-
-    @BindView(R.id.errorView)
-    TextView errorView;
-
-    @BindView(R.id.progress_bar)
-    View progressBar;
-
-    @BindView(R.id.my_toolbar)
-    Toolbar toolbar;
+    ActivityMainBinding binding;
 
     MoviesAdapter moviesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.myToolbar);
 
         moviesAdapter = new MoviesAdapter(this);
 
@@ -49,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.movie_item_margin);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(spanCount, spacingInPixels));
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(moviesAdapter);
+        binding.recyclerViewMovies.addItemDecoration(new SpacesItemDecoration(spanCount, spacingInPixels));
+        binding.recyclerViewMovies.setLayoutManager(gridLayoutManager);
+        binding.recyclerViewMovies.setHasFixedSize(true);
+        binding.recyclerViewMovies.setAdapter(moviesAdapter);
 
         getPopularMoviesTask();
     }
@@ -114,21 +100,21 @@ public class MainActivity extends AppCompatActivity implements GetMoviesTask.Mov
 
     //Handle visibility of views
     private void showContent() {
-        recyclerView.setVisibility(View.VISIBLE);
-        errorView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.GONE);
+        binding.recyclerViewMovies.setVisibility(View.VISIBLE);
+        binding.errorView.setVisibility(View.GONE);
+        binding.progressBar.setVisibility(View.GONE);
     }
 
     private void showNoItems() {
-        recyclerView.setVisibility(View.GONE);
-        errorView.setVisibility(View.VISIBLE);
-        errorView.setText(R.string.no_results);
-        progressBar.setVisibility(View.GONE);
+        binding.recyclerViewMovies.setVisibility(View.GONE);
+        binding.errorView.setVisibility(View.VISIBLE);
+        binding.errorView.setText(R.string.no_results);
+        binding.progressBar.setVisibility(View.GONE);
     }
 
     private void showError() {
-        recyclerView.setVisibility(View.GONE);
-        errorView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+        binding.recyclerViewMovies.setVisibility(View.GONE);
+        binding.errorView.setVisibility(View.VISIBLE);
+        binding.progressBar.setVisibility(View.GONE);
     }
 }

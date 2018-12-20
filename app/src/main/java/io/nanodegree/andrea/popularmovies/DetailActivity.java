@@ -1,17 +1,14 @@
 package io.nanodegree.andrea.popularmovies;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import io.nanodegree.andrea.popularmovies.databinding.DetailActivityBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 
 /**
@@ -25,29 +22,15 @@ public class DetailActivity extends AppCompatActivity {
 
     public final static String MOVIE_EXTRA = "extra.movie";
 
-    @BindView(R.id.image_iv)
-    ImageView posterImageView;
-
-    @BindView(R.id.tv_plot_content)
-    TextView plotTextView;
-
-    @BindView(R.id.tv_release_date_content)
-    TextView releaseDateTextView;
-
-    @BindView(R.id.tv_rating_content)
-    TextView ratingTextView;
-
-    @BindView(R.id.my_toolbar)
-    Toolbar toolbar;
+    DetailActivityBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.detail_activity);
+        binding = DataBindingUtil.setContentView(this, R.layout.detail_activity);
 
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.myToolbar);
 
         if (getIntent() != null && getIntent().hasExtra(MOVIE_EXTRA)) {
             Movie movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
@@ -55,18 +38,17 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(movie.getOriginalTitle());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            Picasso.get().load(movie.getImageThumbnailUrl()).into(posterImageView);
-            plotTextView.setText(movie.getPlotSynopsis());
-            releaseDateTextView.setText(movie.getReleaseDate());
-            ratingTextView.setText(getString(R.string.rating_out_of, movie.getUserRating()));
-
+            Picasso.get().load(movie.getImageThumbnailUrl()).into(binding.imageIv);
+            binding.tvPlotContent.setText(movie.getPlotSynopsis());
+            binding.tvReleaseDateContent.setText(movie.getReleaseDate());
+            binding.tvRatingContent.setText(getString(R.string.rating_out_of, movie.getUserRating()));
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) // Press Back Icon
-        {
+        // Press Back Icon
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
 
