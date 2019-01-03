@@ -51,10 +51,10 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(movie.originalTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            Picasso.get().load(movie.getImageThumbnailUrl()).into(binding.imageIv);
-            binding.tvPlotContent.setText(movie.plotSynopsis);
-            binding.tvReleaseDateContent.setText(movie.releaseDate);
-            binding.tvRatingContent.setText(getString(R.string.rating_out_of, movie.userRating));
+            Picasso.get().load(movie.getImageThumbnailUrl()).into(binding.contentLayout.imageIv);
+            binding.contentLayout.tvPlotContent.setText(movie.plotSynopsis);
+            binding.contentLayout.tvReleaseDateContent.setText(movie.releaseDate);
+            binding.contentLayout.tvRatingContent.setText(getString(R.string.rating_out_of, movie.userRating));
 
             Call<VideoContainer> movieVideosCall = MovieDbClient.getPopularMoviesService().getMovieVideos(movie.id);
             movieVideosCall.enqueue(videoContainerCallback);
