@@ -77,13 +77,21 @@ public class DetailActivity extends AppCompatActivity {
             Call<ReviewsContainer> reviewsContainerCall = MovieDbClient.getPopularMoviesService().getMovieReviews(movie.id);
             reviewsContainerCall.enqueue(reviewsContainerCallback);
 
-
-            binding.contentLayout.imageIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    movieDatabase.getMovieDao().insertMovie(movie);
-                }
-            });
+            if (movieDatabase.getMovieDao().getMovie(movie.id) != null) {
+                binding.contentLayout.imageIv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        movieDatabase.getMovieDao().deleteMovie(movie);
+                    }
+                });
+            } else {
+                binding.contentLayout.imageIv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        movieDatabase.getMovieDao().insertMovie(movie);
+                    }
+                });
+            }
 
         } else {
             showError();
