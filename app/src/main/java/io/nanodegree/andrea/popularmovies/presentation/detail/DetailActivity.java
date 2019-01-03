@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -35,6 +37,8 @@ public class DetailActivity extends AppCompatActivity {
 
     DetailActivityBinding binding;
 
+    private TrailersAdapter trailersAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,7 @@ public class DetailActivity extends AppCompatActivity {
             binding.contentLayout.tvReleaseDateContent.setText(movie.releaseDate);
             binding.contentLayout.tvRatingContent.setText(getString(R.string.detail_rating_out_of, movie.userRating));
 
+            trailersAdapter = new TrailersAdapter(this);
             Call<VideoContainer> movieVideosCall = MovieDbClient.getPopularMoviesService().getMovieVideos(movie.id);
             movieVideosCall.enqueue(videoContainerCallback);
 
@@ -99,8 +104,19 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public void onResponse(Call<VideoContainer> call, Response<VideoContainer> response) {
 
-            for (Video video : response.body().videoList) {
-                Log.d("DETAIL", "Youtube: " + "https://www.youtube.com/watch?v=" + video.key);
+            if (response.isSuccessful() && response.body() != null) {
+
+                List<Video> videoList = response.body().getYoutubeTrailers();
+
+                if (videoList != null && videoList.size() > 0) {
+                    trailersAdapter.setData(videoList);
+                    trailersAdapter.notifyDataSetChanged();
+                    showContent();
+                } else {
+                    // empty adapter
+                }
+            } else {
+                // empty adapter
             }
         }
 
