@@ -20,7 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 public class MovieDbClient {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
-    private static final String API_KEY = "";
+    private static final String API_KEY = "220e2ce24c38e16c4eafe5708e0e39d4";
     private static PopularMoviesService service;
 
     private static void initPopularMoviesService() {
