@@ -1,7 +1,6 @@
 package io.nanodegree.andrea.popularmovies.presentation.detail;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -39,6 +38,7 @@ public class DetailActivity extends AppCompatActivity {
     DetailActivityBinding binding;
 
     private TrailersAdapter trailersAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +67,10 @@ public class DetailActivity extends AppCompatActivity {
             Call<VideoContainer> movieVideosCall = MovieDbClient.getPopularMoviesService().getMovieVideos(movie.id);
             movieVideosCall.enqueue(videoContainerCallback);
 
+
+            reviewsAdapter = new ReviewsAdapter();
+            binding.contentLayout.tvReviewsList.setAdapter(reviewsAdapter);
+            binding.contentLayout.tvReviewsList.setLayoutManager(new LinearLayoutManager(this));
             Call<ReviewsContainer> reviewsContainerCall = MovieDbClient.getPopularMoviesService().getMovieReviews(movie.id);
             reviewsContainerCall.enqueue(reviewsContainerCallback);
         } else {
@@ -132,8 +136,18 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public void onResponse(Call<ReviewsContainer> call, Response<ReviewsContainer> response) {
 
-            for (Review review : response.body().reviewList) {
-                Log.d("DETAIL", "Author: " + review.author);
+            if (response.isSuccessful() && response.body() != null) {
+
+                List<Review> reviewList = response.body().reviewList;
+
+                if (reviewList != null && reviewList.size() > 0) {
+                    reviewsAdapter.setData(reviewList);
+                    reviewsAdapter.notifyDataSetChanged();
+                } else {
+                    // empty adapter
+                }
+            } else {
+                // empty adapter
             }
         }
 
