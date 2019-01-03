@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingUtil;
 import io.nanodegree.andrea.popularmovies.R;
 import io.nanodegree.andrea.popularmovies.databinding.DetailActivityBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
+import io.nanodegree.andrea.popularmovies.model.Review;
+import io.nanodegree.andrea.popularmovies.model.ReviewsContainer;
 import io.nanodegree.andrea.popularmovies.model.Video;
 import io.nanodegree.andrea.popularmovies.model.VideoContainer;
 import io.nanodegree.andrea.popularmovies.service.MovieDbClient;
@@ -56,6 +58,9 @@ public class DetailActivity extends AppCompatActivity {
 
             Call<VideoContainer> movieVideosCall = MovieDbClient.getPopularMoviesService().getMovieVideos(movie.id);
             movieVideosCall.enqueue(videoContainerCallback);
+
+            Call<ReviewsContainer> reviewsContainerCall = MovieDbClient.getPopularMoviesService().getMovieReviews(movie.id);
+            reviewsContainerCall.enqueue(reviewsContainerCallback);
         } else {
             showError();
         }
@@ -101,6 +106,21 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Call<VideoContainer> call, Throwable t) {
+
+        }
+    };
+
+    Callback<ReviewsContainer> reviewsContainerCallback = new Callback<ReviewsContainer>() {
+        @Override
+        public void onResponse(Call<ReviewsContainer> call, Response<ReviewsContainer> response) {
+
+            for (Review review : response.body().reviewList) {
+                Log.d("DETAIL", "Author: " + review.author);
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ReviewsContainer> call, Throwable t) {
 
         }
     };

@@ -1,6 +1,7 @@
 package io.nanodegree.andrea.popularmovies.service;
 
 import io.nanodegree.andrea.popularmovies.model.MovieContainer;
+import io.nanodegree.andrea.popularmovies.model.ReviewsContainer;
 import io.nanodegree.andrea.popularmovies.model.VideoContainer;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -25,5 +26,5 @@ public interface PopularMoviesService {
     Call<VideoContainer> getMovieVideos(@Path("id") String id);
 
     @GET("{id}/reviews")
-    Call<VideoContainer> getMovieReviews(@Path("id") String id);
+    Call<ReviewsContainer> getMovieReviews(@Path("id") String id);
 }
