@@ -1,6 +1,7 @@
 package io.nanodegree.andrea.popularmovies.presentation.detail;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -38,6 +39,7 @@ public class DetailActivity extends AppCompatActivity {
 
     DetailActivityBinding binding;
     MovieDatabase movieDatabase;
+    Movie movie;
 
     private TrailersAdapter trailersAdapter;
     private ReviewsAdapter reviewsAdapter;
@@ -54,7 +56,7 @@ public class DetailActivity extends AppCompatActivity {
 
         if (getIntent() != null && getIntent().hasExtra(MOVIE_EXTRA)) {
             showContent();
-            final Movie movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
+            movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
 
             getSupportActionBar().setTitle(movie.originalTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,26 +78,15 @@ public class DetailActivity extends AppCompatActivity {
             binding.contentLayout.tvReviewsList.setLayoutManager(new LinearLayoutManager(this));
             Call<ReviewsContainer> reviewsContainerCall = MovieDbClient.getPopularMoviesService().getMovieReviews(movie.id);
             reviewsContainerCall.enqueue(reviewsContainerCallback);
-
-            if (movieDatabase.getMovieDao().getMovie(movie.id) != null) {
-                binding.contentLayout.imageIv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        movieDatabase.getMovieDao().deleteMovie(movie);
-                    }
-                });
-            } else {
-                binding.contentLayout.imageIv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        movieDatabase.getMovieDao().insertMovie(movie);
-                    }
-                });
-            }
-
         } else {
             showError();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -103,9 +94,23 @@ public class DetailActivity extends AppCompatActivity {
         // Press Back Icon
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.fav_button) {
+            if (isMovieInFavorites(movie)) {
+                item.setIcon(android.R.drawable.star_off);
+                movieDatabase.getMovieDao().deleteMovie(movie);
+            } else {
+                item.setIcon(android.R.drawable.star_on);
+                movieDatabase.getMovieDao().insertMovie(movie);
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(0).setIcon(isMovieInFavorites(movie) ? android.R.drawable.star_on : android.R.drawable.star_off);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     //Handle visibility of views
@@ -127,8 +132,8 @@ public class DetailActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void onSaveMovieInFavorites() {
-
+    private boolean isMovieInFavorites(Movie movie) {
+        return movieDatabase.getMovieDao().getMovie(movie.id) != null;
     }
 
     Callback<VideoContainer> videoContainerCallback = new Callback<VideoContainer>() {
