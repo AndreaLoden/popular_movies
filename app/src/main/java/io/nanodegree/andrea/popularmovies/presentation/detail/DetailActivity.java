@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
             Picasso.get().load(movie.getImageThumbnailUrl()).into(binding.contentLayout.imageIv);
             binding.contentLayout.tvPlotContent.setText(movie.plotSynopsis);
             binding.contentLayout.tvReleaseDateContent.setText(movie.releaseDate);
-            binding.contentLayout.tvRatingContent.setText(getString(R.string.rating_out_of, movie.userRating));
+            binding.contentLayout.tvRatingContent.setText(getString(R.string.detail_rating_out_of, movie.userRating));
 
             Call<VideoContainer> movieVideosCall = MovieDbClient.getPopularMoviesService().getMovieVideos(movie.id);
             movieVideosCall.enqueue(videoContainerCallback);

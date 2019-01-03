@@ -7,5 +7,8 @@
     <string name="detail_release_date_label">Release date:</string>
     <string name="detail_plot_label">Plot:</string>
     <string name="detail_rating_label">Rating:</string>
-    <string name="rating_out_of">%s/10</string>
+    <string name="detail_rating_out_of">%s/10</string>
+    <string name="detail_the_movie_poster">This image shows the movie poster</string>
+    <string name="detail_trailers">Trailers</string>
+    <string name="detail_reviews">Reviews</string>
 </resources>

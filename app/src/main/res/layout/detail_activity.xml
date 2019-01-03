@@ -25,12 +25,15 @@
 
             <include
                 android:id="@+id/contentLayout"
-                layout="@layout/detail_activity_content" />
+                layout="@layout/detail_activity_content"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

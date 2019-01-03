@@ -13,6 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/detail_the_movie_poster"
             app:layout_constraintDimensionRatio="w,9:16"
             tools:layout_height="100dp"
             tools:layout_width="100dp" />
@@ -26,11 +27,42 @@
             tools:text="Description description description description description description description description description description description description description description description description description description description description description description description" />
 
         <TextView
+            android:id="@+id/tv_trailers_label"
+            style="@style/RecyclerViewStlye"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_trailers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_plot_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tv_trailers_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_trailers_label" />
+
+        <TextView
+            android:id="@+id/tv_reviews_label"
+            style="@style/RecyclerViewStlye"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_reviews"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_trailers_list" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tv_reviews_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reviews_label" />
+
+        <TextView
             android:id="@+id/tv_release_date_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/detail_release_date_label"
             android:textStyle="bold"
@@ -51,7 +83,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/detail_rating_label"
             android:textStyle="bold"
