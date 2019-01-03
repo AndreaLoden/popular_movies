@@ -1,4 +1,4 @@
-package io.nanodegree.andrea.popularmovies;
+package io.nanodegree.andrea.popularmovies.presentation.main;
 
 import android.graphics.Rect;
 import androidx.recyclerview.widget.RecyclerView;

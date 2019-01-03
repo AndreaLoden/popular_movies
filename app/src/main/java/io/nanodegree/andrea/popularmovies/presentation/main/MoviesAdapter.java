@@ -1,4 +1,4 @@
-package io.nanodegree.andrea.popularmovies;
+package io.nanodegree.andrea.popularmovies.presentation.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.nanodegree.andrea.popularmovies.R;
+import io.nanodegree.andrea.popularmovies.presentation.detail.DetailActivity;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 
 /**

@@ -1,4 +1,4 @@
-package io.nanodegree.andrea.popularmovies;
+package io.nanodegree.andrea.popularmovies.presentation.main;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +11,7 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
+import io.nanodegree.andrea.popularmovies.R;
 import io.nanodegree.andrea.popularmovies.databinding.ActivityMainBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 import io.nanodegree.andrea.popularmovies.model.MovieContainer;

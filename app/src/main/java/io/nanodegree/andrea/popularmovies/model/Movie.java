@@ -15,6 +15,9 @@ public class Movie implements Serializable {
 
     private static final String MOVIES_DB_BASE_THUMBNAIL_URL = "http:/image.tmdb.org/t/p/w500";
 
+    @Json(name = "id")
+    public String id;
+
     @Json(name = "title")
     public String originalTitle;
 
