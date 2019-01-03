@@ -12,6 +12,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import io.nanodegree.andrea.popularmovies.R;
 import io.nanodegree.andrea.popularmovies.databinding.DetailActivityBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
@@ -61,6 +62,8 @@ public class DetailActivity extends AppCompatActivity {
             binding.contentLayout.tvRatingContent.setText(getString(R.string.detail_rating_out_of, movie.userRating));
 
             trailersAdapter = new TrailersAdapter(this);
+            binding.contentLayout.tvTrailersList.setAdapter(trailersAdapter);
+            binding.contentLayout.tvTrailersList.setLayoutManager(new LinearLayoutManager(this));
             Call<VideoContainer> movieVideosCall = MovieDbClient.getPopularMoviesService().getMovieVideos(movie.id);
             movieVideosCall.enqueue(videoContainerCallback);
 
@@ -83,19 +86,19 @@ public class DetailActivity extends AppCompatActivity {
 
     //Handle visibility of views
     private void showContent() {
-        binding.contentLayout.setVisibility(View.VISIBLE);
+        binding.contentLayout.content.setVisibility(View.VISIBLE);
         binding.errorView.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.GONE);
     }
 
     private void showError() {
-        binding.contentLayout.setVisibility(View.GONE);
+        binding.contentLayout.content.setVisibility(View.GONE);
         binding.errorView.setVisibility(View.VISIBLE);
         binding.progressBar.setVisibility(View.GONE);
     }
 
     private void showLoading() {
-        binding.contentLayout.setVisibility(View.GONE);
+        binding.contentLayout.content.setVisibility(View.GONE);
         binding.errorView.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.VISIBLE);
     }
@@ -111,7 +114,6 @@ public class DetailActivity extends AppCompatActivity {
                 if (videoList != null && videoList.size() > 0) {
                     trailersAdapter.setData(videoList);
                     trailersAdapter.notifyDataSetChanged();
-                    showContent();
                 } else {
                     // empty adapter
                 }

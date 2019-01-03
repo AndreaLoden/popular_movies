@@ -5,6 +5,7 @@ import com.squareup.moshi.Json;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Andrea Loddo (andrea@evenly.io) on 20.12.2018
@@ -15,8 +16,8 @@ import java.util.List;
  */
 public class VideoContainer {
 
-    private static final String TRAILER_KEYWORD = "trailer";
-    private static final String YOUTUBE_KEYWORD = "youtube";
+    private static final String TRAILER_KEYWORD = "Trailer";
+    private static final String YOUTUBE_KEYWORD = "YouTube";
 
     @Json(name = "results")
     private List<Video> videoList;
@@ -30,7 +31,7 @@ public class VideoContainer {
             for (Iterator<Video> videoIterator = videoList.listIterator(); videoIterator.hasNext(); ) {
                 Video nextVideo = videoIterator.next();
 
-                if (!nextVideo.type.contains(TRAILER_KEYWORD) || !nextVideo.site.contains(YOUTUBE_KEYWORD)) {
+                if (!(Objects.equals(nextVideo.type, TRAILER_KEYWORD) && Objects.equals(nextVideo.site, YOUTUBE_KEYWORD))) {
                     videoIterator.remove();
                 }
             }
