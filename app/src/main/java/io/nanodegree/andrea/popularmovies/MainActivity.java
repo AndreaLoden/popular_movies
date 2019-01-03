@@ -43,18 +43,18 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
         binding.recyclerViewMovies.setHasFixedSize(true);
         binding.recyclerViewMovies.setAdapter(moviesAdapter);
 
-        Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().listPopularMovies();
+        Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().getListPopularMovies();
         popularMoviesCall.enqueue(this);
     }
 
 
     private void getPopularMovies() {
-        Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().listPopularMovies();
+        Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().getListPopularMovies();
         popularMoviesCall.enqueue(this);
     }
 
     private void getTopRatedMovies() {
-        Call<MovieContainer> topRatedMoviesCall = MovieDbClient.getPopularMoviesService().listTopRatedMovies();
+        Call<MovieContainer> topRatedMoviesCall = MovieDbClient.getPopularMoviesService().getListTopRatedMovies();
         topRatedMoviesCall.enqueue(this);
     }
 

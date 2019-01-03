@@ -14,8 +14,8 @@ import retrofit2.http.GET;
 public interface PopularMoviesService {
 
     @GET("popular")
-    Call<MovieContainer> listPopularMovies();
+    Call<MovieContainer> getListPopularMovies();
 
     @GET("top_rated")
-    Call<MovieContainer> listTopRatedMovies();
+    Call<MovieContainer> getListTopRatedMovies();
 }
