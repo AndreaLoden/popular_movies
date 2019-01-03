@@ -2,8 +2,6 @@ package io.nanodegree.andrea.popularmovies.presentation.main;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +12,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import io.nanodegree.andrea.popularmovies.R;
-import io.nanodegree.andrea.popularmovies.presentation.detail.DetailActivity;
 import io.nanodegree.andrea.popularmovies.model.Movie;
+import io.nanodegree.andrea.popularmovies.presentation.detail.DetailActivity;
 
 /**
  * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
@@ -75,7 +75,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
 
         void bind(Movie movie) {
             this.movie = movie;
-            Picasso.get().load(movie.getImageThumbnailUrl()).into(moviePoster);
+            Picasso.get().load(movie.getFormattedImageThumbnailUrl()).into(moviePoster);
         }
 
         @Override

@@ -19,6 +19,7 @@ import io.nanodegree.andrea.popularmovies.model.Review;
 import io.nanodegree.andrea.popularmovies.model.ReviewsContainer;
 import io.nanodegree.andrea.popularmovies.model.Video;
 import io.nanodegree.andrea.popularmovies.model.VideoContainer;
+import io.nanodegree.andrea.popularmovies.persistence.MovieDatabase;
 import io.nanodegree.andrea.popularmovies.service.MovieDbClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +37,7 @@ public class DetailActivity extends AppCompatActivity {
     public final static String MOVIE_EXTRA = "extra.movie";
 
     DetailActivityBinding binding;
+    MovieDatabase movieDatabase;
 
     private TrailersAdapter trailersAdapter;
     private ReviewsAdapter reviewsAdapter;
@@ -45,18 +47,19 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.detail_activity);
+        movieDatabase = MovieDatabase.getInstance(getApplicationContext());
         showLoading();
 
         setSupportActionBar(binding.myToolbar);
 
         if (getIntent() != null && getIntent().hasExtra(MOVIE_EXTRA)) {
             showContent();
-            Movie movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
+            final Movie movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
 
             getSupportActionBar().setTitle(movie.originalTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            Picasso.get().load(movie.getImageThumbnailUrl()).into(binding.contentLayout.imageIv);
+            Picasso.get().load(movie.getFormattedImageThumbnailUrl()).into(binding.contentLayout.imageIv);
             binding.contentLayout.tvPlotContent.setText(movie.plotSynopsis);
             binding.contentLayout.tvReleaseDateContent.setText(movie.releaseDate);
             binding.contentLayout.tvRatingContent.setText(getString(R.string.detail_rating_out_of, movie.userRating));
@@ -73,6 +76,15 @@ public class DetailActivity extends AppCompatActivity {
             binding.contentLayout.tvReviewsList.setLayoutManager(new LinearLayoutManager(this));
             Call<ReviewsContainer> reviewsContainerCall = MovieDbClient.getPopularMoviesService().getMovieReviews(movie.id);
             reviewsContainerCall.enqueue(reviewsContainerCallback);
+
+
+            binding.contentLayout.imageIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    movieDatabase.getMovieDao().insertMovie(movie);
+                }
+            });
+
         } else {
             showError();
         }
@@ -105,6 +117,10 @@ public class DetailActivity extends AppCompatActivity {
         binding.contentLayout.content.setVisibility(View.GONE);
         binding.errorView.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void onSaveMovieInFavorites() {
+
     }
 
     Callback<VideoContainer> videoContainerCallback = new Callback<VideoContainer>() {

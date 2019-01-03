@@ -3,9 +3,13 @@
 
     <item
         android:id="@+id/popular_movie"
-        android:title="Show popular movies" />
+        android:title="@string/menu_entry_show_popular_movies" />
 
     <item
         android:id="@+id/top_rated_movies"
-        android:title="Show top rated movies" />
+        android:title="@string/menu_entry_show_top_rated_movies" />
+
+    <item
+        android:id="@+id/favorite_movies"
+        android:title="@string/menu_entry_show_favorite_movies" />
 </menu>

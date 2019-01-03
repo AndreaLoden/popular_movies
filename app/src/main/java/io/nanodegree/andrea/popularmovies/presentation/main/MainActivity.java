@@ -15,6 +15,7 @@ import io.nanodegree.andrea.popularmovies.R;
 import io.nanodegree.andrea.popularmovies.databinding.ActivityMainBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 import io.nanodegree.andrea.popularmovies.model.MovieContainer;
+import io.nanodegree.andrea.popularmovies.persistence.MovieDatabase;
 import io.nanodegree.andrea.popularmovies.service.MovieDbClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,12 +27,16 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
 
     MoviesAdapter moviesAdapter;
 
+    MovieDatabase movieDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         setSupportActionBar(binding.myToolbar);
+
+        movieDatabase = MovieDatabase.getInstance(getApplicationContext());
 
         moviesAdapter = new MoviesAdapter(this);
 
@@ -59,6 +64,18 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
         topRatedMoviesCall.enqueue(this);
     }
 
+    private void getFavoriteMovies() {
+        List<Movie> movieList = movieDatabase.getMovieDao().loadAllFavorites();
+
+        if (movieList != null && movieList.size() > 0) {
+            moviesAdapter.setData(movieList);
+            moviesAdapter.notifyDataSetChanged();
+            showContent();
+        } else {
+            showNoItems();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -76,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
             case R.id.top_rated_movies:
                 getTopRatedMovies();
                 return true;
+            case R.id.favorite_movies:
+                getFavoriteMovies();
             default:
                 return super.onOptionsItemSelected(item);
         }
