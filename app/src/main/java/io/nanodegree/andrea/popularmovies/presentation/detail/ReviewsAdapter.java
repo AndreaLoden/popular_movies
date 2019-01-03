@@ -75,7 +75,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewIt
 
         void bind(Review review) {
             this.review = review;
-            tv_review_title.setText(String.format("%s%s", context.getString(R.string.detail_review_by), review.author));
+            tv_review_title.setText(String.format("%s %s", context.getString(R.string.detail_review_by), review.author));
             tv_review_content.setText(review.content);
         }
 
