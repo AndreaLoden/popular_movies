@@ -119,16 +119,16 @@ public class DetailActivity extends AppCompatActivity {
                     trailersAdapter.setData(videoList);
                     trailersAdapter.notifyDataSetChanged();
                 } else {
-                    // empty adapter
+                    binding.contentLayout.tvTrailersLabel.setVisibility(View.GONE);
                 }
             } else {
-                // empty adapter
+                binding.contentLayout.tvTrailersLabel.setVisibility(View.GONE);
             }
         }
 
         @Override
         public void onFailure(Call<VideoContainer> call, Throwable t) {
-
+            binding.contentLayout.tvTrailersLabel.setVisibility(View.GONE);
         }
     };
 
@@ -144,16 +144,16 @@ public class DetailActivity extends AppCompatActivity {
                     reviewsAdapter.setData(reviewList);
                     reviewsAdapter.notifyDataSetChanged();
                 } else {
-                    // empty adapter
+                    binding.contentLayout.tvReviewsLabel.setVisibility(View.GONE);
                 }
             } else {
-                // empty adapter
+                binding.contentLayout.tvReviewsLabel.setVisibility(View.GONE);
             }
         }
 
         @Override
         public void onFailure(Call<ReviewsContainer> call, Throwable t) {
-
+            binding.contentLayout.tvReviewsLabel.setVisibility(View.GONE);
         }
     };
 }

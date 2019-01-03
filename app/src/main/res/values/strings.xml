@@ -11,4 +11,5 @@
     <string name="detail_the_movie_poster">This image shows the movie poster</string>
     <string name="detail_trailers">Trailers</string>
     <string name="detail_reviews">Reviews</string>
+    <string name="details_play_trailer_description">Click here to play the trailer on YouTube</string>
 </resources>
