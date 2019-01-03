@@ -12,4 +12,5 @@
     <string name="detail_trailers">Trailers</string>
     <string name="detail_reviews">Reviews</string>
     <string name="details_play_trailer_description">Click here to play the trailer on YouTube</string>
+    <string name="detail_review_by">Review by </string>
 </resources>
