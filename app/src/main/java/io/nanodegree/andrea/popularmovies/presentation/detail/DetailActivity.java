@@ -68,7 +68,7 @@ public class DetailActivity extends AppCompatActivity {
             movieVideosCall.enqueue(videoContainerCallback);
 
 
-            reviewsAdapter = new ReviewsAdapter();
+            reviewsAdapter = new ReviewsAdapter(this);
             binding.contentLayout.tvReviewsList.setAdapter(reviewsAdapter);
             binding.contentLayout.tvReviewsList.setLayoutManager(new LinearLayoutManager(this));
             Call<ReviewsContainer> reviewsContainerCall = MovieDbClient.getPopularMoviesService().getMovieReviews(movie.id);
