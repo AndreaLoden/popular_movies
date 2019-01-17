@@ -8,8 +8,12 @@ import android.view.View;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import io.nanodegree.andrea.popularmovies.R;
 import io.nanodegree.andrea.popularmovies.databinding.ActivityMainBinding;
@@ -27,16 +31,12 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
 
     MoviesAdapter moviesAdapter;
 
-    MovieDatabase movieDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         setSupportActionBar(binding.myToolbar);
-
-        movieDatabase = MovieDatabase.getInstance(getApplicationContext());
 
         moviesAdapter = new MoviesAdapter(this);
 
@@ -65,15 +65,21 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
     }
 
     private void getFavoriteMovies() {
-        List<Movie> movieList = movieDatabase.getMovieDao().loadAllFavorites();
 
-        if (movieList != null && movieList.size() > 0) {
-            moviesAdapter.setData(movieList);
-            moviesAdapter.notifyDataSetChanged();
-            showContent();
-        } else {
-            showNoItems();
-        }
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        viewModel.getMovieList().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> movies) {
+                if (movies != null && movies.size() > 0) {
+                    moviesAdapter.setData(movies);
+                    moviesAdapter.notifyDataSetChanged();
+                    showContent();
+                } else {
+                    showNoItems();
+                }
+            }
+        });
     }
 
     @Override

@@ -12,7 +12,10 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import io.nanodegree.andrea.popularmovies.AppExecutors;
 import io.nanodegree.andrea.popularmovies.R;
 import io.nanodegree.andrea.popularmovies.databinding.DetailActivityBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
@@ -43,6 +46,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private TrailersAdapter trailersAdapter;
     private ReviewsAdapter reviewsAdapter;
+    private DetailViewModel detailViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +62,9 @@ public class DetailActivity extends AppCompatActivity {
             showContent();
             movie = (Movie) getIntent().getSerializableExtra(MOVIE_EXTRA);
 
+            DetailViewModelFactory factory = new DetailViewModelFactory(getApplication(), movieDatabase, movie);
+            detailViewModel = ViewModelProviders.of(this, factory).get(DetailViewModel.class);
+
             getSupportActionBar().setTitle(movie.originalTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -71,7 +78,6 @@ public class DetailActivity extends AppCompatActivity {
             binding.contentLayout.tvTrailersList.setLayoutManager(new LinearLayoutManager(this));
             Call<VideoContainer> movieVideosCall = MovieDbClient.getPopularMoviesService().getMovieVideos(movie.id);
             movieVideosCall.enqueue(videoContainerCallback);
-
 
             reviewsAdapter = new ReviewsAdapter(this);
             binding.contentLayout.tvReviewsList.setAdapter(reviewsAdapter);
@@ -94,14 +100,10 @@ public class DetailActivity extends AppCompatActivity {
         // Press Back Icon
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.unfav_button) {
+            removeMovieFromFavorites();
         } else if (item.getItemId() == R.id.fav_button) {
-            if (isMovieInFavorites(movie)) {
-                item.setIcon(android.R.drawable.star_off);
-                movieDatabase.getMovieDao().deleteMovie(movie);
-            } else {
-                item.setIcon(android.R.drawable.star_on);
-                movieDatabase.getMovieDao().insertMovie(movie);
-            }
+            addMovieToFavorites();
         }
 
         return super.onOptionsItemSelected(item);
@@ -109,7 +111,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setIcon(isMovieInFavorites(movie) ? android.R.drawable.star_on : android.R.drawable.star_off);
+        updateFavStatus(menu.findItem(R.id.unfav_button), menu.findItem(R.id.fav_button));
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -132,8 +134,33 @@ public class DetailActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
     }
 
-    private boolean isMovieInFavorites(Movie movie) {
-        return movieDatabase.getMovieDao().getMovie(movie.id) != null;
+    private void updateFavStatus(final MenuItem menuItemFav, final MenuItem menuItemUnfav) {
+
+        detailViewModel.movie.observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(Movie movie) {
+                menuItemFav.setVisible(movie != null);
+                menuItemUnfav.setVisible(movie == null);
+            }
+        });
+    }
+
+    private void removeMovieFromFavorites() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                movieDatabase.getMovieDao().deleteMovie(movie);
+            }
+        });
+    }
+
+    private void addMovieToFavorites() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                movieDatabase.getMovieDao().insertMovie(movie);
+            }
+        });
     }
 
     Callback<VideoContainer> videoContainerCallback = new Callback<VideoContainer>() {

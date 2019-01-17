@@ -2,6 +2,7 @@ package io.nanodegree.andrea.popularmovies.persistence;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -19,10 +20,10 @@ import io.nanodegree.andrea.popularmovies.model.Movie;
 public interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    List<Movie> loadAllFavorites();
+    LiveData<List<Movie>> loadAllFavorites();
 
     @Query("SELECT * FROM movie WHERE id LIKE :id")
-    Movie getMovie(String id);
+    LiveData<Movie> getMovie(String id);
 
     @Insert
     void insertMovie(Movie movie);

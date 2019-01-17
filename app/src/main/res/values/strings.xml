@@ -16,5 +16,6 @@
     <string name="menu_entry_show_popular_movies">Show popular movies</string>
     <string name="menu_entry_show_top_rated_movies">Show top rated movies</string>
     <string name="menu_entry_show_favorite_movies">Show favorite movies</string>
-    <string name="details_activity_menu_toggle_favorite">Toggle favorite</string>
+    <string name="details_activity_menu_toggle_fav">Add to favourites</string>
+    <string name="details_activity_menu_toggle_unfav">Remove from favourites</string>
 </resources>
