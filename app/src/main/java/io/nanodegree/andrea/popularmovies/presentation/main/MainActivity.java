@@ -1,5 +1,6 @@
 package io.nanodegree.andrea.popularmovies.presentation.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,7 +12,6 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,7 +19,6 @@ import io.nanodegree.andrea.popularmovies.R;
 import io.nanodegree.andrea.popularmovies.databinding.ActivityMainBinding;
 import io.nanodegree.andrea.popularmovies.model.Movie;
 import io.nanodegree.andrea.popularmovies.model.MovieContainer;
-import io.nanodegree.andrea.popularmovies.persistence.MovieDatabase;
 import io.nanodegree.andrea.popularmovies.service.MovieDbClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,19 +39,34 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
 
         moviesAdapter = new MoviesAdapter(this);
 
-        int spanCount = getSpanCount();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
-
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.movie_item_margin);
-        binding.recyclerViewMovies.addItemDecoration(new SpacesItemDecoration(spanCount, spacingInPixels));
-        binding.recyclerViewMovies.setLayoutManager(gridLayoutManager);
-        binding.recyclerViewMovies.setHasFixedSize(true);
-        binding.recyclerViewMovies.setAdapter(moviesAdapter);
+        setupRecyclerView();
 
         Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().getListPopularMovies();
         popularMoviesCall.enqueue(this);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        setupRecyclerView();
+    }
+
+    private void setupRecyclerView() {
+        int spanCount = getSpanCount();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
+
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.movie_item_margin);
+
+        //Cleanup decorators from other configurations
+        for (int i = 0; i < binding.recyclerViewMovies.getItemDecorationCount(); i++) {
+            binding.recyclerViewMovies.removeItemDecorationAt(i);
+        }
+        binding.recyclerViewMovies.addItemDecoration(new SpacesItemDecoration(spanCount, spacingInPixels));
+        binding.recyclerViewMovies.setLayoutManager(gridLayoutManager);
+        binding.recyclerViewMovies.setHasFixedSize(true);
+        binding.recyclerViewMovies.setAdapter(moviesAdapter);
+    }
 
     private void getPopularMovies() {
         Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().getListPopularMovies();
