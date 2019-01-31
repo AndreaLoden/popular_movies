@@ -61,6 +61,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemV
         this.movies.addAll(movies);
     }
 
+    public ArrayList<Movie> getData() {
+        return new ArrayList<>(this.movies);
+    }
+
     class MovieItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView moviePoster;

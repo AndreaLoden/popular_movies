@@ -2,11 +2,13 @@ package io.nanodegree.andrea.popularmovies.presentation.main;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -27,6 +29,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements Callback<MovieContainer> {
 
     private static final String BUNDLE_RECYCLER_LAYOUT = "mainactivity.recycler.layout";
+    private static final String BUNDLE_MOVIES = "mainactivity.data.movies";
 
     private ActivityMainBinding binding;
     private MoviesAdapter moviesAdapter;
@@ -43,21 +46,37 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
 
         setupRecyclerView();
 
-        Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().getListPopularMovies();
-        popularMoviesCall.enqueue(this);
+        if (savedInstanceState == null) {
+            //It means it is a fresh start in the activity. If savedInstanceState is not null we will
+            //restore state in the onRestoreInstanceState method
+
+            Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().getListPopularMovies();
+            popularMoviesCall.enqueue(this);
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, gridLayoutManager.onSaveInstanceState());
+        outState.putSerializable(BUNDLE_MOVIES, moviesAdapter.getData());
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
-        Parcelable state = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-        gridLayoutManager.onRestoreInstanceState(state);
+        try {
+            List<Movie> movies = (ArrayList<Movie>) savedInstanceState.getSerializable(BUNDLE_MOVIES);
+            moviesAdapter.setData(movies);
+            moviesAdapter.notifyDataSetChanged();
+            showContent();
+
+            Parcelable state = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            gridLayoutManager.onRestoreInstanceState(state);
+
+        } catch (ClassCastException cce) {
+            Log.d(MainActivity.class.getName(), "Unable to deserialize passed movies");
+        }
 
         super.onRestoreInstanceState(savedInstanceState);
     }
@@ -68,10 +87,6 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.movie_item_margin);
 
-        //Cleanup decorators from other configurations
-        for (int i = 0; i < binding.recyclerViewMovies.getItemDecorationCount(); i++) {
-            binding.recyclerViewMovies.removeItemDecorationAt(i);
-        }
         binding.recyclerViewMovies.addItemDecoration(new SpacesItemDecoration(spanCount, spacingInPixels));
         binding.recyclerViewMovies.setLayoutManager(gridLayoutManager);
         binding.recyclerViewMovies.setHasFixedSize(true);
@@ -79,11 +94,13 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
     }
 
     private void getPopularMovies() {
+
         Call<MovieContainer> popularMoviesCall = MovieDbClient.getPopularMoviesService().getListPopularMovies();
         popularMoviesCall.enqueue(this);
     }
 
     private void getTopRatedMovies() {
+
         Call<MovieContainer> topRatedMoviesCall = MovieDbClient.getPopularMoviesService().getListTopRatedMovies();
         topRatedMoviesCall.enqueue(this);
     }
@@ -96,14 +113,20 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
             @Override
             public void onChanged(@Nullable List<Movie> movies) {
                 if (movies != null && movies.size() > 0) {
-                    moviesAdapter.setData(movies);
-                    moviesAdapter.notifyDataSetChanged();
-                    showContent();
+                    showResults(movies);
                 } else {
                     showNoItems();
                 }
             }
         });
+    }
+
+    private void showResults(List<Movie> movies){
+        moviesAdapter.setData(movies);
+        moviesAdapter.notifyDataSetChanged();
+        showContent();
+
+        binding.recyclerViewMovies.smoothScrollToPosition(0);
     }
 
     @Override
@@ -138,9 +161,7 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
             List<Movie> movies = response.body().movieList;
 
             if (movies != null && movies.size() > 0) {
-                moviesAdapter.setData(movies);
-                moviesAdapter.notifyDataSetChanged();
-                showContent();
+                showResults(movies);
             } else {
                 showNoItems();
             }
