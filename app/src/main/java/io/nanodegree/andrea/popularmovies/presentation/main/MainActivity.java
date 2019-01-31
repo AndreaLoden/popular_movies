@@ -1,7 +1,7 @@
 package io.nanodegree.andrea.popularmovies.presentation.main;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,9 +26,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements Callback<MovieContainer> {
 
-    private ActivityMainBinding binding;
+    private static final String BUNDLE_RECYCLER_LAYOUT = "mainactivity.recycler.layout";
 
+    private ActivityMainBinding binding;
     private MoviesAdapter moviesAdapter;
+    private GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +48,23 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieCon
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, gridLayoutManager.onSaveInstanceState());
+        super.onSaveInstanceState(outState);
+    }
 
-        setupRecyclerView();
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        Parcelable state = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+        gridLayoutManager.onRestoreInstanceState(state);
+
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private void setupRecyclerView() {
         int spanCount = getSpanCount();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
+        gridLayoutManager = new GridLayoutManager(this, spanCount);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.movie_item_margin);
 
