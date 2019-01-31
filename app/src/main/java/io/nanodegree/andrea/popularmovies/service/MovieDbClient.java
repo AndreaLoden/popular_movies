@@ -17,7 +17,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  * Copyright (c) 2018 Evenly GmbH,
  * all rights reserved
  */
-public class MovieDbClient {
+public final class MovieDbClient {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String API_KEY = "";

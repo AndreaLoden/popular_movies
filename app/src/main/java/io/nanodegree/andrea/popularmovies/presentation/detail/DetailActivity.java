@@ -40,9 +40,9 @@ public class DetailActivity extends AppCompatActivity {
 
     public final static String MOVIE_EXTRA = "extra.movie";
 
-    DetailActivityBinding binding;
-    MovieDatabase movieDatabase;
-    Movie movie;
+    private DetailActivityBinding binding;
+    private MovieDatabase movieDatabase;
+    private Movie movie;
 
     private TrailersAdapter trailersAdapter;
     private ReviewsAdapter reviewsAdapter;
@@ -65,8 +65,10 @@ public class DetailActivity extends AppCompatActivity {
             DetailViewModelFactory factory = new DetailViewModelFactory(getApplication(), movieDatabase, movie);
             detailViewModel = ViewModelProviders.of(this, factory).get(DetailViewModel.class);
 
-            getSupportActionBar().setTitle(movie.originalTitle);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(movie.originalTitle);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
 
             Picasso.get().load(movie.getFormattedImageThumbnailUrl()).into(binding.contentLayout.imageIv);
             binding.contentLayout.tvPlotContent.setText(movie.plotSynopsis);

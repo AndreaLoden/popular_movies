@@ -26,9 +26,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements Callback<MovieContainer> {
 
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
 
-    MoviesAdapter moviesAdapter;
+    private MoviesAdapter moviesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
