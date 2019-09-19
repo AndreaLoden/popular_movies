@@ -1,9 +1,9 @@
 package java.io.nanodegree.popularmovies.feature.movie.domain.usecase
 
 import java.io.nanodegree.popularmovies.feature.movie.data.model.Movie
-import java.io.nanodegree.popularmovies.feature.movie.data.repository.MovieRepository
+import java.io.nanodegree.popularmovies.feature.movie.domain.repository.MovieListRepository
 
-internal class GetPopularMoviesListUseCase(private val movieRepository: MovieRepository) {
+internal class GetPopularMoviesListUseCase(private val movieRepository: MovieListRepository) {
 
     suspend fun execute(): List<Movie> {
 

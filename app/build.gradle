@@ -34,4 +34,8 @@ dependencies {
 
     //Support libraries
     implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    // Koin for Android - Scope feature
+    // include koin-android-scope & koin-android
+    implementation 'org.koin:koin-android-viewmodel:2.0.1'
 }

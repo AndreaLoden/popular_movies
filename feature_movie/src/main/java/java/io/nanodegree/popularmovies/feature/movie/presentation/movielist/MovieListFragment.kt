@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import io.nanodegree.andrea.popularmovies.feature.movie.R
 import kotlinx.android.synthetic.main.fragment_movie_list.*
-import java.io.nanodegree.popularmovies.feature.movie.data.repository.MovieRepository
-import java.io.nanodegree.popularmovies.feature.movie.domain.usecase.GetPopularMoviesListUseCase
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.nanodegree.popularmovies.feature.movie.extensions.observe
 import java.io.nanodegree.popularmovies.feature.movie.presentation.movielist.recyclerview.MoviesAdapter
 
@@ -19,6 +19,8 @@ import java.io.nanodegree.popularmovies.feature.movie.presentation.movielist.rec
 class MovieListFragment : Fragment() {
 
     private val moviesAdapter by lazy { MoviesAdapter(context!!) }
+    // Lazy Inject ViewModel
+    private val movieListViewModel: MovieListViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
@@ -26,8 +28,6 @@ class MovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel = MovieListViewModel(GetPopularMoviesListUseCase(MovieRepository()))
 
         recycler_view_movies.apply {
             setHasFixedSize(true)
@@ -39,8 +39,8 @@ class MovieListFragment : Fragment() {
             adapter = moviesAdapter
         }
 
-        observe(viewModel.stateLiveData, ::onStateChange)
-        viewModel.loadMovies()
+        observe(movieListViewModel.stateLiveData, ::onStateChange)
+        movieListViewModel.loadMovies()
     }
 
     private fun onStateChange(state: MovieListViewModel.ViewState) {
