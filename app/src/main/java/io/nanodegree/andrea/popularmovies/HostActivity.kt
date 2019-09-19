@@ -29,7 +29,7 @@ class HostActivity : AppCompatActivity(), MovieNavigator {
      *********************************************************************************************/
 
     override fun navigateToMovieDetailFragment(movie: Movie) {
-        val movieDetailFragment = MovieDetailFragment()
+        val movieDetailFragment = MovieDetailFragment.newInstance(movie)
 
         supportFragmentManager
                 .beginTransaction()

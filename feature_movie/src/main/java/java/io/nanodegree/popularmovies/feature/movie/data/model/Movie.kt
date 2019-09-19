@@ -1,6 +1,7 @@
 package java.io.nanodegree.popularmovies.feature.movie.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
@@ -12,7 +13,7 @@ import com.google.gson.annotations.SerializedName
  */
 //@Entity
 data class Movie(@field:SerializedName("id") val id: String?,
-                 @field:SerializedName("poster_path") val imageThumbnailUrl: String?) {
+                 @field:SerializedName("poster_path") val imageThumbnailUrl: String?) : Serializable {
 
     fun getFormattedImageThumbnailUrl(): String {
         return "http:/image.tmdb.org/t/p/w500" + imageThumbnailUrl
