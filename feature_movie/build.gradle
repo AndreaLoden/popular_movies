@@ -50,6 +50,9 @@ dependencies {
     // Koin for Android - Scope feature
     // include koin-android-scope & koin-android
     implementation 'org.koin:koin-android-viewmodel:2.0.1'
+
+    implementation 'androidx.core:core-ktx:1.1.0'
+
 }
 repositories {
     mavenCentral()

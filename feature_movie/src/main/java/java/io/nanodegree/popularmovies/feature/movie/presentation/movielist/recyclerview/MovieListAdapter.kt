@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import io.nanodegree.andrea.popularmovies.feature.movie.R
@@ -21,7 +22,7 @@ import java.util.*
 internal class MovieListAdapter(private val movieClickListener: MovieClickListener) : RecyclerView.Adapter<MovieListAdapter.MovieItemViewHolder>() {
 
     interface MovieClickListener {
-        fun onMovieClicked(movie: Movie)
+        fun onMovieClicked(movie: Movie, transitionView: View)
     }
 
     private val movies: MutableList<Movie>
@@ -41,6 +42,10 @@ internal class MovieListAdapter(private val movieClickListener: MovieClickListen
 
     override fun onBindViewHolder(holder: MovieItemViewHolder, position: Int) {
         holder.bind(movies[position])
+
+        val movie = movies[position]
+        ViewCompat.setTransitionName(holder.moviePoster, movie.id)
+        holder.moviePoster.setOnClickListener{movieClickListener.onMovieClicked(movie, holder.moviePoster)}
     }
 
     override fun getItemCount(): Int = movies.size
@@ -50,22 +55,13 @@ internal class MovieListAdapter(private val movieClickListener: MovieClickListen
         this.movies.addAll(movies)
     }
 
-    internal inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    internal inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var moviePoster: ImageView = itemView.findViewById(R.id.movie_poster)
-        var movie: Movie? = null
-
-        init {
-            itemView.setOnClickListener(this)
-        }
 
         fun bind(movie: Movie) {
-            this.movie = movie
             Picasso.get().load(movie.getFormattedImageThumbnailUrl()).into(moviePoster)
         }
 
-        override fun onClick(v: View) {
-            movie?.let { movieClickListener.onMovieClicked(it) }
-        }
     }
 }

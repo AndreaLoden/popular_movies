@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="@string/detail_the_movie_poster"
+            android:transitionName="poster_transition_view"
             app:layout_constraintDimensionRatio="w,9:16"
             tools:layout_height="100dp"
             tools:layout_width="100dp" />

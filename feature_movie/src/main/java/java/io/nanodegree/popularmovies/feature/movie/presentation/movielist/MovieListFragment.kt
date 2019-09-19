@@ -1,6 +1,7 @@
 package java.io.nanodegree.popularmovies.feature.movie.presentation.movielist
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        postponeEnterTransition()
         recycler_view_movies.apply {
             setHasFixedSize(true)
             layoutManager =
@@ -45,13 +46,15 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
 
         observe(movieListViewModel.stateLiveData, ::onStateChange)
         movieListViewModel.loadMovies()
+        Handler().postDelayed({    startPostponedEnterTransition()
+        }, 1000)
     }
 
     /**********************************************************************************************
      * Implementation of [MovieListAdapter.MovieClickListener]
      *********************************************************************************************/
-    override fun onMovieClicked(movie: Movie) {
-        (activity as MovieNavigator).navigateToMovieDetailFragment(movie)
+    override fun onMovieClicked(movie: Movie, transitionView: View) {
+        (activity as MovieNavigator).navigateToMovieDetailFragment(movie, this, transitionView)
     }
 
     /**********************************************************************************************
