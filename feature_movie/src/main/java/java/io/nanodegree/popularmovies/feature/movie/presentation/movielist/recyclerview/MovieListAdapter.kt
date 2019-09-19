@@ -1,6 +1,5 @@
 package java.io.nanodegree.popularmovies.feature.movie.presentation.movielist.recyclerview
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,11 @@ import java.util.*
  * Copyright (c) 2018 Evenly GmbH,
  * all rights reserved
  */
-internal class MoviesAdapter(private val context: Context) : RecyclerView.Adapter<MoviesAdapter.MovieItemViewHolder>() {
+internal class MovieListAdapter(private val movieClickListener: MovieClickListener) : RecyclerView.Adapter<MovieListAdapter.MovieItemViewHolder>() {
+
+    interface MovieClickListener {
+        fun onMovieClicked(movie: Movie)
+    }
 
     private val movies: MutableList<Movie>
 
@@ -61,6 +64,8 @@ internal class MoviesAdapter(private val context: Context) : RecyclerView.Adapte
             Picasso.get().load(movie.getFormattedImageThumbnailUrl()).into(moviePoster)
         }
 
-        override fun onClick(v: View) {}
+        override fun onClick(v: View) {
+            movie?.let { movieClickListener.onMovieClicked(it) }
+        }
     }
 }

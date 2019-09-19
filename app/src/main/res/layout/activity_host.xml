@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".HostActivity">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,12 +24,5 @@
             app:popupTheme="@style/PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <fragment
-        android:id="@+id/fragment"
-        android:name="java.io.nanodegree.popularmovies.feature.movie.presentation.movielist.MovieListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_movie_list" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

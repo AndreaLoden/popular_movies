@@ -18,7 +18,7 @@ internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPo
             getPopularMoviesListUseCase.execute()
                     .also {
                         if (it.isNotEmpty()) {
-                            sendAction(Action.MoviwListLoadingSuccess(it))
+                            sendAction(Action.MovieListLoadingSuccess(it))
                         } else {
                             sendAction(Action.MovieListLoadingFailure)
                         }
@@ -32,10 +32,10 @@ internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPo
     }
 
     fun onReduceState(viewAction: Action) = when (viewAction) {
-        is Action.MoviwListLoadingSuccess -> ViewState(
+        is Action.MovieListLoadingSuccess -> ViewState(
                 isLoading = false,
                 isError = false,
-                movies = viewAction.albums
+                movies = viewAction.movies
         )
         is Action.MovieListLoadingFailure -> ViewState(
                 isLoading = false,
@@ -51,7 +51,7 @@ internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPo
     )
 
     internal sealed class Action {
-        class MoviwListLoadingSuccess(val albums: List<Movie>) : Action()
+        class MovieListLoadingSuccess(val movies: List<Movie>) : Action()
         object MovieListLoadingFailure : Action()
     }
 }
