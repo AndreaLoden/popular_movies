@@ -1,6 +1,6 @@
 package java.io.nanodegree.popularmovies.feature.movie.data.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 /**
  * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
@@ -11,14 +11,16 @@ import com.squareup.moshi.Json
  * all rights reserved
  */
 //@Entity
-data class Movie(@field:Json(name = "id") val id: String?)
+data class Movie(@field:SerializedName("id") val id: String?,
+                 @field:SerializedName("poster_path") val imageThumbnailUrl: String?) {
 
-/*private static final String MOVIES_DB_BASE_THUMBNAIL_URL = "http:/image.tmdb.org/t/p/w500";
+    fun getFormattedImageThumbnailUrl(): String {
+        return "http:/image.tmdb.org/t/p/w500" + imageThumbnailUrl
+    }
+}
 
-    @NonNull
-    @Json(name = "id")
-    //@PrimaryKey
-    public String id;
+/*
+
 
     @Json(name = "title")
     public String originalTitle;

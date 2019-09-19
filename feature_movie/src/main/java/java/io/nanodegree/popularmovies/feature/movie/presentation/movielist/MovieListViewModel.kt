@@ -1,21 +1,57 @@
 package java.io.nanodegree.popularmovies.feature.movie.presentation.movielist
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.nanodegree.popularmovies.feature.movie.data.retrofit.response.MovieContainer
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import java.io.nanodegree.popularmovies.feature.movie.data.model.Movie
 import java.io.nanodegree.popularmovies.feature.movie.domain.usecase.GetPopularMoviesListUseCase
 
 internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPopularMoviesListUseCase) : ViewModel() {
 
+    private val stateMutableLiveData = MutableLiveData<ViewState>()
+    val stateLiveData = stateMutableLiveData as LiveData<ViewState>
+
     fun loadMovies() {
-        /*viewModelScope.launch {
+        viewModelScope.launch {
             getPopularMoviesListUseCase.execute()
                     .also {
-                        Log.d("diomerda","diomerda")
+                        if (it.isNotEmpty()) {
+                            sendAction(Action.MoviwListLoadingSuccess(it))
+                        } else {
+                            sendAction(Action.MovieListLoadingFailure)
+                        }
                     }
-        }*/
+        }
 
+    }
+
+    fun sendAction(action: Action) {
+        stateMutableLiveData.value = onReduceState(action)
+    }
+
+    fun onReduceState(viewAction: Action) = when (viewAction) {
+        is Action.MoviwListLoadingSuccess -> ViewState(
+                isLoading = false,
+                isError = false,
+                movies = viewAction.albums
+        )
+        is Action.MovieListLoadingFailure -> ViewState(
+                isLoading = false,
+                isError = true,
+                movies = listOf()
+        )
+    }
+
+    internal data class ViewState(
+            val isLoading: Boolean = true,
+            val isError: Boolean = false,
+            val movies: List<Movie> = listOf()
+    )
+
+    internal sealed class Action {
+        class MoviwListLoadingSuccess(val albums: List<Movie>) : Action()
+        object MovieListLoadingFailure : Action()
     }
 }
