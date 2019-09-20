@@ -5,6 +5,6 @@
 
     <include
         android:id="@+id/contentLayout"
-        layout="@layout/detail_activity_content" />
+        layout="@layout/detail_fragment_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

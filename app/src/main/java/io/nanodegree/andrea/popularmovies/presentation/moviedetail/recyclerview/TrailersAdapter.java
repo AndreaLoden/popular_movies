@@ -30,7 +30,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
     private List<Video> videoList;
     private Context context;
 
-    TrailersAdapter(@NonNull Context context) {
+    public TrailersAdapter(@NonNull Context context) {
         this.context = context;
         videoList = new ArrayList<>();
     }

@@ -29,7 +29,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewIt
     private List<Review> reviewList;
     private Context context;
 
-    ReviewsAdapter(@NonNull Context context) {
+    public ReviewsAdapter(@NonNull Context context) {
         this.context = context;
         reviewList = new ArrayList<>();
     }
