@@ -17,7 +17,7 @@ object MovieDbClient {
     private const val BASE_URL = "https://api.themoviedb.org/3/movie/"
     private const val API_KEY = "220e2ce24c38e16c4eafe5708e0e39d4"
 
-    val popularMoviesService: PopularMoviesService by lazy {
+    val popularMoviesService: MoviesService by lazy {
 
         val client = OkHttpClient.Builder()
                 .addInterceptor { chain ->
@@ -33,6 +33,6 @@ object MovieDbClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-        return@lazy retrofit.create(PopularMoviesService::class.java)
+        return@lazy retrofit.create(MoviesService::class.java)
     }
 }

@@ -6,16 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.io.nanodegree.popularmovies.feature.movie.data.model.Movie
-import java.io.nanodegree.popularmovies.feature.movie.domain.usecase.GetPopularMoviesListUseCase
+import java.io.nanodegree.popularmovies.feature.movie.domain.usecase.GetMovieListUseCase
 
-internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPopularMoviesListUseCase) : ViewModel() {
+internal class MovieListViewModel(private val getMovieListUseCase: GetMovieListUseCase) : ViewModel() {
 
     private val stateMutableLiveData = MutableLiveData<ViewState>()
     val stateLiveData = stateMutableLiveData as LiveData<ViewState>
 
     fun loadMovies() {
+
+        sendAction(Action.MovieListLoading)
+
         viewModelScope.launch {
-            getPopularMoviesListUseCase.execute()
+            getMovieListUseCase.getMoviesList()
                     .also {
                         if (it.isNotEmpty()) {
                             sendAction(Action.MovieListLoadingSuccess(it))
@@ -24,7 +27,6 @@ internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPo
                         }
                     }
         }
-
     }
 
     fun sendAction(action: Action) {
@@ -42,6 +44,11 @@ internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPo
                 isError = true,
                 movies = listOf()
         )
+        is Action.MovieListLoading -> ViewState(
+                isLoading = true,
+                isError = false,
+                movies = listOf()
+        )
     }
 
     internal data class ViewState(
@@ -53,5 +60,6 @@ internal class MovieListViewModel(private val getPopularMoviesListUseCase: GetPo
     internal sealed class Action {
         class MovieListLoadingSuccess(val movies: List<Movie>) : Action()
         object MovieListLoadingFailure : Action()
+        object MovieListLoading : Action()
     }
 }
