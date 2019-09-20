@@ -7,5 +7,4 @@ import java.io.nanodegree.popularmovies.feature.movie.domain.repository.MovieLis
 class MovieListRepositoryImpl(private val client: MoviesService) : MovieListRepository {
 
     override suspend fun getPopularMovies(): MovieContainer = client.listPopularMovies()
-    override suspend fun getTopRatedMovies(): MovieContainer = client.listTopRatedMovies()
 }

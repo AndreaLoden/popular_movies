@@ -64,7 +64,11 @@ internal class MovieListAdapter(private val movieClickListener: MovieClickListen
         var moviePoster: ImageView = itemView.findViewById(R.id.movie_poster)
 
         fun bind(movie: Movie) {
-            Picasso.get().load(movie.getFormattedImageThumbnailUrl()).into(moviePoster)
+            Picasso.get()
+                    .load(movie.getFormattedImageThumbnailUrl())
+                    .placeholder(R.drawable.poster_placeholder_loading)
+                    .error(R.drawable.poster_placeholder_error)
+                    .into(moviePoster)
         }
 
     }

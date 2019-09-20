@@ -15,28 +15,15 @@ import java.io.nanodegree.popularmovies.feature.movie.data.model.Movie
 
 class MovieDetailFragment : Fragment() {
 
-
-    companion object {
-        private const val ARG_MOVIE = "movie"
-
-        fun newInstance(movie: Movie): MovieDetailFragment {
-
-            val args = Bundle()
-            args.putSerializable(ARG_MOVIE, movie)
-
-            val fragment = MovieDetailFragment()
-            fragment.arguments = args
-
-            return fragment
-        }
-    }
+    /**********************************************************************************************
+     * Lifecycle callbacks
+     *********************************************************************************************/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.movie_detail_fragment, container, false)
 
         postponeEnterTransition()
-
 
         if (arguments?.containsKey(ARG_MOVIE) == true) {
             (arguments?.getSerializable(ARG_MOVIE) as Movie).let {
@@ -58,6 +45,21 @@ class MovieDetailFragment : Fragment() {
                     startPostponedEnterTransition()
                 }
             }
+        }
+    }
+
+    companion object {
+        private const val ARG_MOVIE = "movie"
+
+        fun newInstance(movie: Movie): MovieDetailFragment {
+
+            val args = Bundle()
+            args.putSerializable(ARG_MOVIE, movie)
+
+            val fragment = MovieDetailFragment()
+            fragment.arguments = args
+
+            return fragment
         }
     }
 }
