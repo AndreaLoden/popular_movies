@@ -11,42 +11,12 @@ import java.io.Serializable
  * Copyright (c) 2018 Evenly GmbH,
  * all rights reserved
  */
-//@Entity
-data class Movie(@field:SerializedName("id") val id: String?,
+data class Movie(@SerializedName("id") val id: String?,
+                 @SerializedName("title") val originalTitle: String?,
+                 @SerializedName("overview") val plotSynopsis: String?,
+                 @SerializedName("vote_average") val userRating: String?,
+                 @SerializedName("release_date") val releaseDate: String?,
                  @field:SerializedName("poster_path") val imageThumbnailUrl: String?) : Serializable {
 
-    fun getFormattedImageThumbnailUrl(): String {
-        return "http:/image.tmdb.org/t/p/w500" + imageThumbnailUrl
-    }
+    fun getFormattedImageThumbnailUrl(): String = "http:/image.tmdb.org/t/p/w500$imageThumbnailUrl"
 }
-
-/*
-
-
-    @Json(name = "title")
-    public String originalTitle;
-
-    @Json(name = "poster_path")
-    public String imageThumbnailUrl;
-
-    @Json(name = "overview")
-    public String plotSynopsis;
-
-    @Json(name = "vote_average")
-    public String userRating;
-
-    @Json(name = "release_date")
-    public String releaseDate;
-
-    public Movie(String id, String originalTitle, String imageThumbnailUrl, String plotSynopsis, String userRating, String releaseDate) {
-        this.id = id;
-        this.originalTitle = originalTitle;
-        this.imageThumbnailUrl = imageThumbnailUrl;
-        this.plotSynopsis = plotSynopsis;
-        this.userRating = userRating;
-        this.releaseDate = releaseDate;
-    }
-
-    public String getFormattedImageThumbnailUrl() {
-        return MOVIES_DB_BASE_THUMBNAIL_URL + imageThumbnailUrl;
-    }*/

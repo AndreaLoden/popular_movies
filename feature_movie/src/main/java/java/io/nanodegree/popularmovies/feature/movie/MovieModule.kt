@@ -6,6 +6,7 @@ import java.io.nanodegree.popularmovies.feature.movie.data.repository.MovieListR
 import java.io.nanodegree.popularmovies.feature.movie.data.retrofit.MovieDbClient
 import java.io.nanodegree.popularmovies.feature.movie.domain.repository.MovieListRepository
 import java.io.nanodegree.popularmovies.feature.movie.domain.usecase.GetMovieListUseCase
+import java.io.nanodegree.popularmovies.feature.movie.presentation.moviedetail.MovieDetailViewModel
 import java.io.nanodegree.popularmovies.feature.movie.presentation.movielist.MovieListViewModel
 
 val movieModule = module {
@@ -16,6 +17,6 @@ val movieModule = module {
 
     single { GetMovieListUseCase(get()) }
 
-    // MyViewModel ViewModel
     viewModel { MovieListViewModel(get()) }
+    viewModel { MovieDetailViewModel(get()) }
 }

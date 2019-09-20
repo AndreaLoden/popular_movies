@@ -1,6 +1,9 @@
 package java.io.nanodegree.popularmovies.feature.movie.data.retrofit
 
 import retrofit2.http.GET
+import retrofit2.http.Path
+import java.io.nanodegree.popularmovies.feature.movie.data.model.ReviewsContainer
+import java.io.nanodegree.popularmovies.feature.movie.data.model.VideoContainer
 import java.io.nanodegree.popularmovies.feature.movie.data.retrofit.response.MovieContainer
 
 /**
@@ -15,4 +18,10 @@ interface MoviesService {
 
     @GET("popular")
     suspend fun listPopularMovies(): MovieContainer
+
+    @GET("{id}/videos")
+    suspend fun getMovieVideos(@Path("id") id: String): VideoContainer
+
+    @GET("{id}/reviews")
+    suspend fun getMovieReviews(@Path("id") id: String): ReviewsContainer
 }

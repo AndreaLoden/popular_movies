@@ -10,10 +10,15 @@ import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import io.nanodegree.andrea.popularmovies.feature.movie.R
 import kotlinx.android.synthetic.main.detail_activity_content.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.nanodegree.popularmovies.feature.movie.data.model.Movie
+import java.io.nanodegree.popularmovies.feature.movie.presentation.movielist.MovieListViewModel
 
 
 class MovieDetailFragment : Fragment() {
+
+    // Lazy Inject ViewModel
+    private val movieDetailViewModel: MovieDetailViewModel by viewModel()
 
     /**********************************************************************************************
      * Lifecycle callbacks
@@ -38,7 +43,13 @@ class MovieDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (arguments?.containsKey(ARG_MOVIE) == true) {
             (arguments?.getSerializable(ARG_MOVIE) as Movie).let {
+
+                tv_plot_content.text = it.plotSynopsis
+                tv_release_date_content.text = it.releaseDate
+                tv_rating_content.text = getString(R.string.detail_rating_out_of, it.userRating)
+
                 Picasso.get().load(it.getFormattedImageThumbnailUrl()).into(image_iv)
+
                 // Data is loaded so lets wait for our parent to be drawn
                 (view.parent as? ViewGroup)?.doOnPreDraw {
                     // Parent has been drawn. Start transitioning!
