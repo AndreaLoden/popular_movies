@@ -1,17 +1,16 @@
 package io.nanodegree.andrea.popularmovies
 
 import android.os.Bundle
-import android.transition.ChangeBounds
 import android.transition.Fade
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_host.*
-import java.io.nanodegree.popularmovies.feature.movie.data.model.Movie
-import java.io.nanodegree.popularmovies.feature.movie.presentation.MovieNavigator
-import java.io.nanodegree.popularmovies.feature.movie.presentation.moviedetail.MovieDetailFragment
-import java.io.nanodegree.popularmovies.feature.movie.presentation.movielist.MovieListFragment
+import io.nanodegree.andrea.popularmovies.data.model.Movie
+import io.nanodegree.andrea.popularmovies.presentation.MovieNavigator
+import io.nanodegree.andrea.popularmovies.presentation.moviedetail.MovieDetailFragment
+import io.nanodegree.andrea.popularmovies.presentation.movielist.MovieListFragment
 
 
 class HostActivity : AppCompatActivity(), MovieNavigator {
