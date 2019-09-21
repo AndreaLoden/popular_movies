@@ -1,17 +1,19 @@
-# Popular Movies App for Udacity Nanodegree
+# Popular Movies App
 
 ## Project Overview
-In this project, I completed the **Popular Movies** app to
-show movie posters on a grid and more infos about the movies on a separate DetailActivity
+This showcase app queries the MovieDB for popular videos and shows them on a grid, clicking on a poster takes the user to the detail page, where various information about the movie are shown. Reviews and additional videos are also shown, if present.
 
-## What Did I Learn and what is included?
-In this project:
-- Build a UI layout for multiple Activities.
-- Launch these Activities via Intent.
-- Fetch data from themovieDB API
+## What is included?
+- 100% Kotlin
+- API quering using Retrofit + Coroutines inside ViewModel with LiveData
+- Code is organized using Clean Architecture principles
+- DI with Koin
+- Shared element animation from list to detail fragment
+- Picasso for image loading
+- Unit tests
+- One UI test :)
 
-- Network calls with Retrofit
-- LiveData and ViewModel from Architecture components are used for DB operations
-
-## Next steps
-I plan to convert it to kotlin after it is reviewed and stage 2 is reviewed
+## What's missing?
+- The MovieDB provides more data that could be shown, like top rated movies etc
+- Call caching with Room could be added
+- More UI tests
