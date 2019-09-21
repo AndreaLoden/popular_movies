@@ -12,6 +12,7 @@ This showcase app queries the MovieDB for popular videos and shows them on a gri
 - Picasso for image loading
 - Unit tests
 - One UI test :)
+- Basic Circle CI configuration for testing
 
 ## What's missing?
 - The MovieDB provides more data that could be shown, like top rated movies etc
