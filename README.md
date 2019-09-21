@@ -8,7 +8,7 @@ This showcase app queries the MovieDB for popular videos and shows them on a gri
 - API quering using Retrofit + Coroutines inside ViewModel with LiveData
 - Code is organized using Clean Architecture principles
 - DI with Koin
-- Animation from list to detail fragment
+- Shared element animation from list to detail fragment
 - Picasso for image loading
 - Unit tests
 - One UI test :)
