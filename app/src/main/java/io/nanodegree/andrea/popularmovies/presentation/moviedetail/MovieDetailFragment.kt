@@ -18,7 +18,6 @@ import io.nanodegree.andrea.popularmovies.presentation.moviedetail.recyclerview.
 import kotlinx.android.synthetic.main.detail_fragment_content.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class MovieDetailFragment : Fragment() {
 
     private var trailersAdapter: TrailersAdapter? = null

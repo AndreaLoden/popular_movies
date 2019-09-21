@@ -3,14 +3,6 @@ package io.nanodegree.andrea.popularmovies.data.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-/**
- * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
- * for Evenly GmbH
- *
- *
- * Copyright (c) 2018 Evenly GmbH,
- * all rights reserved
- */
 data class Movie(@SerializedName("id") val id: String?,
                  @SerializedName("title") val originalTitle: String?,
                  @SerializedName("overview") val plotSynopsis: String?,

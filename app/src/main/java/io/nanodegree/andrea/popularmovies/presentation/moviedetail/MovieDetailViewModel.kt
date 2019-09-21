@@ -29,11 +29,11 @@ internal class MovieDetailViewModel(private val getMovieDetailUseCase: GetMovieD
 
     }
 
-    fun sendAction(action: Action) {
+    private fun sendAction(action: Action) {
         stateMutableLiveData.value = onReduceState(action)
     }
 
-    fun onReduceState(viewAction: Action) = when (viewAction) {
+    private fun onReduceState(viewAction: Action) = when (viewAction) {
         is Action.MovieListLoadingSuccess -> ViewState(
                 trailers = viewAction.trailers,
                 reviews = viewAction.reviews

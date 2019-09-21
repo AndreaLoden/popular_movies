@@ -4,14 +4,6 @@ import android.graphics.Rect
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
-/**
- * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
- * for Evenly GmbH
- *
- *
- * Copyright (c) 2018 Evenly GmbH,
- * all rights reserved
- */
 class SpacesItemDecoration internal constructor(private val spanCount: Int, private val spacing: Int) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

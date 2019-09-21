@@ -11,14 +11,6 @@ import io.nanodegree.andrea.popularmovies.R
 import io.nanodegree.andrea.popularmovies.data.model.Movie
 import java.util.*
 
-/**
- * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
- * for Evenly GmbH
- *
- *
- * Copyright (c) 2018 Evenly GmbH,
- * all rights reserved
- */
 internal class MovieListAdapter(private val movieClickListener: MovieClickListener) : RecyclerView.Adapter<MovieListAdapter.MovieItemViewHolder>() {
 
     interface MovieClickListener {

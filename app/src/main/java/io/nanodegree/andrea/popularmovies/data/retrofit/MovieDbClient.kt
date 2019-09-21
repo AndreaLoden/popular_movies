@@ -4,14 +4,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-/**
- * Created by Andrea Loddo (andrea@evenly.io) on 20.12.2018
- * for Evenly GmbH
- *
- *
- * Copyright (c) 2018 Evenly GmbH,
- * all rights reserved
- */
 object MovieDbClient {
 
     private const val BASE_URL = "https://api.themoviedb.org/3/movie/"

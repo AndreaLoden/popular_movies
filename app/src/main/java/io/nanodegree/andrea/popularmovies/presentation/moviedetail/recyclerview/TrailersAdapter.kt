@@ -15,14 +15,6 @@ import java.util.ArrayList
 
 import io.nanodegree.andrea.popularmovies.R
 
-/**
- * Created by Andrea Loddo (andrea@evenly.io) on 11.05.2018
- * for Evenly GmbH
- *
- *
- * Copyright (c) 2018 Evenly GmbH,
- * all rights reserved
- */
 class TrailersAdapter(private val context: Context) : RecyclerView.Adapter<TrailersAdapter.TrailerItemViewHolder>() {
 
     private val videoList: MutableList<Video> = ArrayList()

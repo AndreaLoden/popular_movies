@@ -3,14 +3,6 @@ package io.nanodegree.andrea.popularmovies.data.model
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-/**
- * Created by Andrea Loddo (andrea@evenly.io) on 20.12.2018
- * for Evenly GmbH
- *
- *
- * Copyright (c) 2018 Evenly GmbH,
- * all rights reserved
- */
 class VideoContainer(@SerializedName("results")
                      private val videoList: MutableList<Video>? = null) {
 

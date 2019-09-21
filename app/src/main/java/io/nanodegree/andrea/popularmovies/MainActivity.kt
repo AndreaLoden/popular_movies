@@ -13,7 +13,6 @@ import io.nanodegree.andrea.popularmovies.presentation.MovieNavigator
 import io.nanodegree.andrea.popularmovies.presentation.moviedetail.MovieDetailFragment
 import io.nanodegree.andrea.popularmovies.presentation.movielist.MovieListFragment
 
-
 class MainActivity : AppCompatActivity(), MovieNavigator, HostActivity {
 
     // The Idling Resource which will be null in production.
