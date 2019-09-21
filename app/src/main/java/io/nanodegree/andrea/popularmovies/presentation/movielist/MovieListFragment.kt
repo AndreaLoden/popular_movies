@@ -9,14 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import io.nanodegree.andrea.popularmovies.HostActivity
 import io.nanodegree.andrea.popularmovies.R
-import kotlinx.android.synthetic.main.fragment_movie_list.*
-import org.koin.android.viewmodel.ext.android.viewModel
 import io.nanodegree.andrea.popularmovies.data.model.Movie
 import io.nanodegree.andrea.popularmovies.extensions.observe
 import io.nanodegree.andrea.popularmovies.presentation.MovieNavigator
 import io.nanodegree.andrea.popularmovies.presentation.movielist.recyclerview.MovieListAdapter
 import io.nanodegree.andrea.popularmovies.presentation.movielist.recyclerview.SpacesItemDecoration
+import kotlinx.android.synthetic.main.fragment_movie_list.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 /**
@@ -51,6 +52,11 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
         }
 
         Handler().postDelayed({ startPostponedEnterTransition() }, 300)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as HostActivity).setToolbarTitle(getString(R.string.app_name))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

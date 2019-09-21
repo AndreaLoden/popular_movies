@@ -12,7 +12,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <activity
-            android:name=".HostActivity"
+            android:name=".MainActivity"
             android:label="ActivityHost"
             android:theme="@style/AppTheme">
             <intent-filter>

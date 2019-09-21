@@ -9,6 +9,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
+import io.nanodegree.andrea.popularmovies.HostActivity
 import io.nanodegree.andrea.popularmovies.R
 import io.nanodegree.andrea.popularmovies.data.model.Movie
 import io.nanodegree.andrea.popularmovies.extensions.observe
@@ -36,12 +37,6 @@ class MovieDetailFragment : Fragment() {
 
         postponeEnterTransition()
 
-        if (arguments?.containsKey(ARG_MOVIE) == true) {
-            (arguments?.getSerializable(ARG_MOVIE) as Movie).let {
-                ViewCompat.setTransitionName(view.findViewById<View>(R.id.image_iv), it.id)
-            }
-        }
-
         return view
     }
 
@@ -49,16 +44,19 @@ class MovieDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (arguments?.containsKey(ARG_MOVIE) == true) {
-            (arguments?.getSerializable(ARG_MOVIE) as Movie).let {
+            (arguments?.getSerializable(ARG_MOVIE) as Movie).let { itMovie ->
 
                 observe(movieDetailViewModel.stateLiveData, ::onStateChange)
-                movieDetailViewModel.loadRelatedData(it.id ?: "")
+                movieDetailViewModel.loadRelatedData(itMovie.id ?: "")
 
-                tv_plot_content.text = it.plotSynopsis
-                tv_release_date_content.text = it.releaseDate
-                tv_rating_content.text = getString(R.string.detail_rating_out_of, it.userRating)
+                itMovie.originalTitle?.let { (activity as HostActivity).setToolbarTitle(it) }
 
-                Picasso.get().load(it.getFormattedImageThumbnailUrl()).into(image_iv)
+                tv_plot_content.text = itMovie.plotSynopsis
+                tv_release_date_content.text = itMovie.releaseDate
+                tv_rating_content.text = getString(R.string.detail_rating_out_of, itMovie.userRating)
+
+                ViewCompat.setTransitionName(view.findViewById<View>(R.id.image_iv), itMovie.id)
+                Picasso.get().load(itMovie.getFormattedImageThumbnailUrl()).into(image_iv)
 
                 // Data is loaded so lets wait for our parent to be drawn
                 (view.parent as? ViewGroup)?.doOnPreDraw {
@@ -72,7 +70,7 @@ class MovieDetailFragment : Fragment() {
             reviewsAdapter = ReviewsAdapter(it)
             tv_reviews_list.adapter = reviewsAdapter
             tv_reviews_list.layoutManager = LinearLayoutManager(it)
-            
+
             trailersAdapter = TrailersAdapter(it)
             tv_trailers_list.adapter = trailersAdapter
             tv_trailers_list.layoutManager = LinearLayoutManager(it)
