@@ -34,6 +34,13 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
     /**********************************************************************************************
      * Lifecycle callbacks
      *********************************************************************************************/
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        (activity as HostActivity).getIdlingResource().setIdleState(false)
+
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
@@ -117,6 +124,8 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
         moviesAdapter.notifyDataSetChanged()
         progress_bar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         errorView.visibility = if (state.isError) View.VISIBLE else View.GONE
+
+        if (state.movies.isNotEmpty()) (activity as HostActivity).getIdlingResource().setIdleState(true)
     }
 
     companion object {

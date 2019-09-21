@@ -59,7 +59,7 @@ internal class MovieListAdapter(private val movieClickListener: MovieClickListen
         return ArrayList(this.movies)
     }
 
-    internal inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var moviePoster: ImageView = itemView.findViewById(R.id.movie_poster)
 
