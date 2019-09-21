@@ -9,6 +9,6 @@ internal class GetMovieListUseCase(private val movieRepository: MovieListReposit
         return movieRepository
                 .getPopularMovies()
                 .movieList
-                ?.filter { it.imageThumbnailUrl != null } ?: listOf()
+                ?.filter { !it.imageThumbnailUrl.isNullOrBlank() } ?: listOf()
     }
 }
