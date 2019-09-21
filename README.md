@@ -18,3 +18,4 @@ This showcase app queries the MovieDB for popular videos and shows them on a gri
 - The MovieDB provides more data that could be shown, like top rated movies etc
 - Call caching with Room could be added
 - More UI tests
+- Circle CI pipeline can be extended with more tasks
