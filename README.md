@@ -18,4 +18,6 @@ This showcase app queries the MovieDB for popular videos and shows them on a gri
 - The MovieDB provides more data that could be shown, like top rated movies etc
 - Call caching with Room could be added
 - More UI tests
+- DetailFragment could be prettier
+- ViewModels could have an abstract superclass for the common behaviour
 - Circle CI pipeline can be extended with more tasks
