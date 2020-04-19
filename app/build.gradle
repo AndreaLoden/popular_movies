@@ -1,6 +1,11 @@
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform'
+}
+
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlinx-serialization'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -69,4 +74,80 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
 
+}
+
+kotlin {
+    android("android")
+    // This is for iPhone emulator
+    // Switch here to iosArm64 (or iosArm32) to build library for iPhone device
+    iosX64("ios") {
+        binaries {
+            framework()
+        }
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation kotlin('stdlib-common')
+                implementation "io.ktor:ktor-client-core:$rootProject.ktorVer"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$rootProject.coroutinesVer"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.11.1"
+
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation kotlin('stdlib')
+                implementation "io.ktor:ktor-client-android:$rootProject.ktorVer"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVer"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.1"
+            }
+        }
+        iosMain {
+            dependencies{
+                implementation "io.ktor:ktor-client-ios:$ktorVer"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$rootProject.coroutinesVer"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.11.1"
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test-common')
+                implementation kotlin('test-annotations-common')
+            }
+        }
+
+        androidTest {
+            dependencies {
+                implementation kotlin('test')
+                implementation kotlin('test-junit')
+            }
+        }
+
+        iosTest {
+        }
+      \
+    }
+}
+
+// This task attaches native framework built from ios module to Xcode project
+// (see iosApp directory). Don't run this task directly,
+// Xcode runs this task itself during its build process.
+// Before opening the project from iosApp directory in Xcode,
+// make sure all Gradle infrastructure exists (gradle.wrapper, gradlew).
+task copyFramework {
+    def buildType = project.findProperty('kotlin.build.type') ?: 'DEBUG'
+    def target = project.findProperty('kotlin.target') ?: 'ios'
+    dependsOn kotlin.targets."$target".binaries.getFramework(buildType).linkTask
+
+    doLast {
+        def srcFile = kotlin.targets."$target".binaries.getFramework(buildType).outputFile
+        def targetDir = getProperty('configuration.build.dir')
+        copy {
+            from srcFile.parent
+            into targetDir
+            include 'app.framework/**'
+            include 'app.framework.dSYM'
+        }
+    }
 }
