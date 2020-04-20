@@ -7,8 +7,8 @@ import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import data.model.MovieContainer.Movie
 import io.nanodegree.andrea.popularmovies.R
-import io.nanodegree.andrea.popularmovies.data.model.Movie
 import java.util.*
 
 internal class MovieListAdapter(private val movieClickListener: MovieClickListener) : RecyclerView.Adapter<MovieListAdapter.MovieItemViewHolder>() {

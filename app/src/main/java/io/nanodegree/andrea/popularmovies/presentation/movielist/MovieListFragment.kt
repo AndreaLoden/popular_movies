@@ -9,21 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import data.model.MovieContainer
 import io.nanodegree.andrea.popularmovies.HostActivity
 import io.nanodegree.andrea.popularmovies.R
 import io.nanodegree.andrea.popularmovies.data.model.Movie
 import io.nanodegree.andrea.popularmovies.extensions.observe
-import io.nanodegree.andrea.popularmovies.presentation.MovieNavigator
 import io.nanodegree.andrea.popularmovies.presentation.movielist.recyclerview.MovieListAdapter
 import io.nanodegree.andrea.popularmovies.presentation.movielist.recyclerview.SpacesItemDecoration
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import presentation.MoviePresenter
+import presentation.MovieState
+import presentation.MovieView
 import java.util.*
 
 /**
  * A fragment that shows popular movie posters on a recycler view
  */
-class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
+class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, MovieView {
 
     private var gridLayoutManager: GridLayoutManager? = null
 
@@ -46,6 +49,18 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
     }
 
+    override fun showState(state: MovieState) {
+        try {
+
+            moviesAdapter.setData(state.movieContainer.results)
+            moviesAdapter.notifyDataSetChanged()
+            progress_bar.visibility = View.GONE
+            errorView.visibility = View.GONE
+        } catch (e: Exception) {
+            print(e.message)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,7 +70,14 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
         observe(movieListViewModel.stateLiveData, ::onStateChange)
 
         if (savedInstanceState == null && moviesAdapter.getData().isEmpty()) {
-            movieListViewModel.loadMovies()
+            // movieListViewModel.loadMovies()
+
+            val p = MoviePresenter(this)
+            try {
+                p.start()
+            } catch (e: Exception) {
+                print(e.message)
+            }
         }
 
         Handler().postDelayed({ startPostponedEnterTransition() }, 300)
@@ -95,8 +117,8 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
     /**********************************************************************************************
      * Implementation of [MovieListAdapter.MovieClickListener]
      *********************************************************************************************/
-    override fun onMovieClicked(movie: Movie, transitionView: View) {
-        (activity as MovieNavigator).navigateToMovieDetailFragment(movie, this, transitionView)
+    override fun onMovieClicked(movie: MovieContainer.Movie, transitionView: View) {
+        // (activity as MovieNavigator).navigateToMovieDetailFragment(movie, this, transitionView)
     }
 
     /**********************************************************************************************
@@ -120,7 +142,7 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener {
     }
 
     private fun onStateChange(state: MovieListViewModel.ViewState) {
-        moviesAdapter.setData(state.movies)
+        //moviesAdapter.setData(state.movies)
         moviesAdapter.notifyDataSetChanged()
         progress_bar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         errorView.visibility = if (state.isError) View.VISIBLE else View.GONE
