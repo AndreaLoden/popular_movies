@@ -9,15 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
-import io.nanodegree.andrea.popularmovies.data.model.Video
-import java.util.ArrayList
-
 import io.nanodegree.andrea.popularmovies.R
+import java.util.*
 
 class TrailersAdapter(private val context: Context) : RecyclerView.Adapter<TrailersAdapter.TrailerItemViewHolder>() {
 
-    private val videoList: MutableList<Video> = ArrayList()
+    private val videoList: MutableList<data.model.Video> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailerItemViewHolder {
         val context = parent.context
@@ -34,7 +31,7 @@ class TrailersAdapter(private val context: Context) : RecyclerView.Adapter<Trail
 
     override fun getItemCount(): Int = videoList.size
 
-    fun setData(videos: List<Video>) {
+    fun setData(videos: List<data.model.Video>) {
         this.videoList.clear()
         this.videoList.addAll(videos)
     }
@@ -42,13 +39,13 @@ class TrailersAdapter(private val context: Context) : RecyclerView.Adapter<Trail
     inner class TrailerItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val videoTitle: TextView = itemView.findViewById(R.id.video_title)
-        private var video: Video? = null
+        private var video: data.model.Video? = null
 
         init {
             itemView.setOnClickListener(this)
         }
 
-        fun bind(video: Video) {
+        fun bind(video: data.model.Video) {
             this.video = video
             videoTitle.text = video.name
         }

@@ -7,16 +7,17 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MoviePresenter(private val view: MovieView) {
-    private val case = CaseProvider.getCase()
+class MovieListPresenter(private val movieListView: MovieListView) {
+
+    private val case = CaseProvider.getMovieListCase()
 
     fun start() {
         GlobalScope.apply {
             launch(Background) {
-                val s = case.getMovie()
+                val s = case.getPopularMoviesRepo()
                 println(s)
                 withContext(Main) {
-                    view.showState(MovieState(s))
+                    movieListView.showState(MovieState(s))
                 }
             }
         }

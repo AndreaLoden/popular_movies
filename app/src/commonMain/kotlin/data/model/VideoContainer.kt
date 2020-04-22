@@ -1,23 +1,24 @@
-package io.nanodegree.andrea.popularmovies.data.model
+package data.model
 
-import com.google.gson.annotations.SerializedName
-import java.util.*
+import kotlinx.serialization.Serializable
 
-class VideoContainer(@SerializedName("results")
-                     private val videoList: MutableList<Video>? = null) {
+@Serializable
+data class VideoContainer(
+        val results: List<Video>
+) {
 
     fun getYoutubeTrailers(): List<Video>? {
 
-        val tempVideoList = ArrayList(videoList!!)
+        val tempVideoList = ArrayList(results)
 
         if (tempVideoList.size > 0) {
 
-            val videoIterator = videoList.listIterator()
+            val videoIterator = results.listIterator()
             while (videoIterator.hasNext()) {
                 val (_, _, _, site, type) = videoIterator.next()
 
                 if (!(type == TRAILER_KEYWORD && site == YOUTUBE_KEYWORD)) {
-                    videoIterator.remove()
+                    //videoIterator.remove()
                 }
             }
         }

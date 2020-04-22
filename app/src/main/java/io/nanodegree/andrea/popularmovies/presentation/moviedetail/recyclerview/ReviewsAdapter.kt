@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import data.model.Review
 import io.nanodegree.andrea.popularmovies.R
-import io.nanodegree.andrea.popularmovies.data.model.Review
 import java.util.*
 
 class ReviewsAdapter(private val context: Context) : RecyclerView.Adapter<ReviewsAdapter.ReviewItemViewHolder>() {

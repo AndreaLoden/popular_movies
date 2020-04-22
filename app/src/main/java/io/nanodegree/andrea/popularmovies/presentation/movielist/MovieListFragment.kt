@@ -9,30 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import data.api.map
 import data.model.MovieContainer
 import io.nanodegree.andrea.popularmovies.HostActivity
 import io.nanodegree.andrea.popularmovies.R
 import io.nanodegree.andrea.popularmovies.data.model.Movie
-import io.nanodegree.andrea.popularmovies.extensions.observe
+import io.nanodegree.andrea.popularmovies.presentation.MovieNavigator
 import io.nanodegree.andrea.popularmovies.presentation.movielist.recyclerview.MovieListAdapter
 import io.nanodegree.andrea.popularmovies.presentation.movielist.recyclerview.SpacesItemDecoration
 import kotlinx.android.synthetic.main.fragment_movie_list.*
-import org.koin.android.viewmodel.ext.android.viewModel
-import presentation.MoviePresenter
+import presentation.MovieListPresenter
+import presentation.MovieListView
 import presentation.MovieState
-import presentation.MovieView
 import java.util.*
 
 /**
  * A fragment that shows popular movie posters on a recycler view
  */
-class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, MovieView {
+class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, MovieListView {
 
     private var gridLayoutManager: GridLayoutManager? = null
 
     private val moviesAdapter by lazy { MovieListAdapter(this) }
-    // Lazy Inject ViewModel
-    private val movieListViewModel: MovieListViewModel by viewModel()
 
     /**********************************************************************************************
      * Lifecycle callbacks
@@ -41,7 +39,6 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, Movie
         super.onCreate(savedInstanceState)
 
         (activity as HostActivity).getIdlingResource().setIdleState(false)
-
     }
 
 
@@ -50,15 +47,14 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, Movie
     }
 
     override fun showState(state: MovieState) {
-        try {
+        state.popularMoviesResponse.map(this@MovieListFragment::showMovieList)
+    }
 
-            moviesAdapter.setData(state.movieContainer.results)
-            moviesAdapter.notifyDataSetChanged()
-            progress_bar.visibility = View.GONE
-            errorView.visibility = View.GONE
-        } catch (e: Exception) {
-            print(e.message)
-        }
+    private fun showMovieList(movieList: List<MovieContainer.Movie>) {
+        moviesAdapter.setData(movieList)
+        moviesAdapter.notifyDataSetChanged()
+        progress_bar.visibility = View.GONE
+        errorView.visibility = View.GONE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,17 +63,8 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, Movie
         postponeEnterTransition()
         setupRecyclerView()
 
-        observe(movieListViewModel.stateLiveData, ::onStateChange)
-
         if (savedInstanceState == null && moviesAdapter.getData().isEmpty()) {
-            // movieListViewModel.loadMovies()
-
-            val p = MoviePresenter(this)
-            try {
-                p.start()
-            } catch (e: Exception) {
-                print(e.message)
-            }
+            MovieListPresenter(this).start()
         }
 
         Handler().postDelayed({ startPostponedEnterTransition() }, 300)
@@ -90,18 +77,36 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, Movie
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, gridLayoutManager?.onSaveInstanceState())
-        outState.putSerializable(BUNDLE_MOVIES, moviesAdapter.getData())
+        outState.putSerializable(BUNDLE_MOVIES, moviesAdapter.getData().map {
+            with(it) {
+                Movie(
+                        id,
+                        title,
+                        overview,
+                        vote_average,
+                        release_date,
+                        poster_path
+                )
+            }
+        }.toTypedArray())
         super.onSaveInstanceState(outState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         try {
-            (savedInstanceState?.getSerializable(BUNDLE_MOVIES) as ArrayList<Movie>?)?.let { itMovies ->
-                onStateChange(MovieListViewModel.ViewState(
-                        isLoading = false,
-                        isError = false,
-                        movies = itMovies
-                ))
+            (savedInstanceState?.getSerializable(BUNDLE_MOVIES) as ArrayList<Movie>?)?.let {
+                showMovieList(it.map {
+                    with(it) {
+                        MovieContainer.Movie(
+                                id,
+                                originalTitle,
+                                plotSynopsis,
+                                userRating,
+                                releaseDate,
+                                imageThumbnailUrl
+                        )
+                    }
+                })
             }
 
             val state = savedInstanceState?.getParcelable<Parcelable>(BUNDLE_RECYCLER_LAYOUT)
@@ -118,7 +123,7 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, Movie
      * Implementation of [MovieListAdapter.MovieClickListener]
      *********************************************************************************************/
     override fun onMovieClicked(movie: MovieContainer.Movie, transitionView: View) {
-        // (activity as MovieNavigator).navigateToMovieDetailFragment(movie, this, transitionView)
+        (activity as MovieNavigator).navigateToMovieDetailFragment(movie, this, transitionView)
     }
 
     /**********************************************************************************************
@@ -137,18 +142,7 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener, Movie
         recycler_view_movies.adapter = moviesAdapter
     }
 
-    private fun getSpanCount(): Int {
-        return resources.getInteger(R.integer.span_count)
-    }
-
-    private fun onStateChange(state: MovieListViewModel.ViewState) {
-        //moviesAdapter.setData(state.movies)
-        moviesAdapter.notifyDataSetChanged()
-        progress_bar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-        errorView.visibility = if (state.isError) View.VISIBLE else View.GONE
-
-        if (state.movies.isNotEmpty()) (activity as HostActivity).getIdlingResource().setIdleState(true)
-    }
+    private fun getSpanCount(): Int = resources.getInteger(R.integer.span_count)
 
     companion object {
         private const val BUNDLE_RECYCLER_LAYOUT = "mainactivity.recycler.layout"

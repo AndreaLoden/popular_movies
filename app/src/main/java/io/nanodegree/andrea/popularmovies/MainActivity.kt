@@ -7,11 +7,11 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_host.*
-import io.nanodegree.andrea.popularmovies.data.model.Movie
+import data.model.MovieContainer
 import io.nanodegree.andrea.popularmovies.presentation.MovieNavigator
 import io.nanodegree.andrea.popularmovies.presentation.moviedetail.MovieDetailFragment
 import io.nanodegree.andrea.popularmovies.presentation.movielist.MovieListFragment
+import kotlinx.android.synthetic.main.activity_host.*
 
 class MainActivity : AppCompatActivity(), MovieNavigator, HostActivity {
 
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), MovieNavigator, HostActivity {
      * Implementation of [MovieNavigator]
      *********************************************************************************************/
 
-    override fun navigateToMovieDetailFragment(movie: Movie, originFragment: Fragment, posterImageView: View) {
+    override fun navigateToMovieDetailFragment(movie: MovieContainer.Movie, originFragment: Fragment, posterImageView: View) {
         val movieDetailFragment = MovieDetailFragment.newInstance(movie)
 
         movieDetailFragment.sharedElementEnterTransition = DetailsTransition()

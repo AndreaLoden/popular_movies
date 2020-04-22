@@ -17,11 +17,7 @@ internal class MovieListAdapter(private val movieClickListener: MovieClickListen
         fun onMovieClicked(movie: Movie, transitionView: View)
     }
 
-    private val movies: MutableList<Movie>
-
-    init {
-        movies = ArrayList()
-    }
+    private val movies: MutableList<Movie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         val context = parent.context
@@ -37,7 +33,7 @@ internal class MovieListAdapter(private val movieClickListener: MovieClickListen
 
         val movie = movies[position]
         ViewCompat.setTransitionName(holder.moviePoster, movie.id)
-        holder.moviePoster.setOnClickListener{movieClickListener.onMovieClicked(movie, holder.moviePoster)}
+        holder.moviePoster.setOnClickListener { movieClickListener.onMovieClicked(movie, holder.moviePoster) }
     }
 
     override fun getItemCount(): Int = movies.size
@@ -47,9 +43,7 @@ internal class MovieListAdapter(private val movieClickListener: MovieClickListen
         this.movies.addAll(movies)
     }
 
-    fun getData(): ArrayList<Movie> {
-        return ArrayList(this.movies)
-    }
+    fun getData(): ArrayList<Movie> = ArrayList(this.movies)
 
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

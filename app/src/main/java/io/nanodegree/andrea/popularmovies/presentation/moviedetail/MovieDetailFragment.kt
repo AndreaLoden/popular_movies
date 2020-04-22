@@ -9,22 +9,22 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
+import data.api.map
+import data.model.MovieContainer
 import io.nanodegree.andrea.popularmovies.HostActivity
 import io.nanodegree.andrea.popularmovies.R
 import io.nanodegree.andrea.popularmovies.data.model.Movie
-import io.nanodegree.andrea.popularmovies.extensions.observe
 import io.nanodegree.andrea.popularmovies.presentation.moviedetail.recyclerview.ReviewsAdapter
 import io.nanodegree.andrea.popularmovies.presentation.moviedetail.recyclerview.TrailersAdapter
 import kotlinx.android.synthetic.main.detail_fragment_content.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import presentation.MovieDetailPresenter
+import presentation.MovieDetailState
+import presentation.MovieDetailView
 
-class MovieDetailFragment : Fragment() {
+class MovieDetailFragment : Fragment(), MovieDetailView {
 
     private var trailersAdapter: TrailersAdapter? = null
     private var reviewsAdapter: ReviewsAdapter? = null
-
-    // Lazy Inject ViewModel
-    private val movieDetailViewModel: MovieDetailViewModel by viewModel()
 
     /**********************************************************************************************
      * Lifecycle callbacks
@@ -45,8 +45,7 @@ class MovieDetailFragment : Fragment() {
         if (arguments?.containsKey(ARG_MOVIE) == true) {
             (arguments?.getSerializable(ARG_MOVIE) as Movie).let { itMovie ->
 
-                observe(movieDetailViewModel.stateLiveData, ::onStateChange)
-                movieDetailViewModel.loadRelatedData(itMovie.id ?: "")
+                MovieDetailPresenter(this).start(itMovie.id ?: "")
 
                 itMovie.originalTitle?.let { (activity as HostActivity).setToolbarTitle(it) }
 
@@ -76,34 +75,43 @@ class MovieDetailFragment : Fragment() {
         }
     }
 
-    private fun onStateChange(state: MovieDetailViewModel.ViewState) {
-
-        if (state.reviews.isNotEmpty()) {
-            tv_reviews_label.visibility = View.VISIBLE
-            reviewsAdapter?.setData(state.reviews)
-            reviewsAdapter?.notifyDataSetChanged()
-        }
-
-        if (state.trailers.isNotEmpty()) {
-            tv_trailers_label.visibility = View.VISIBLE
-
-            trailersAdapter?.setData(state.trailers)
-            trailersAdapter?.notifyDataSetChanged()
-        }
-    }
-
     companion object {
         private const val ARG_MOVIE = "movie"
 
-        fun newInstance(movie: Movie): MovieDetailFragment {
+        fun newInstance(movie: MovieContainer.Movie): MovieDetailFragment {
 
             val args = Bundle()
-            args.putSerializable(ARG_MOVIE, movie)
+            args.putSerializable(ARG_MOVIE, with(movie) {
+                Movie(
+                        id,
+                        title,
+                        overview,
+                        vote_average,
+                        release_date,
+                        poster_path
+                )
+            })
 
             val fragment = MovieDetailFragment()
             fragment.arguments = args
 
             return fragment
+        }
+    }
+
+    override fun showState(state: MovieDetailState) {
+
+        state.movieReviewsResponse.map {
+            tv_reviews_label.visibility = View.VISIBLE
+            reviewsAdapter?.setData(it)
+            reviewsAdapter?.notifyDataSetChanged()
+        }
+
+        state.movieTrailers.map {
+            tv_trailers_label.visibility = View.VISIBLE
+
+            trailersAdapter?.setData(it)
+            trailersAdapter?.notifyDataSetChanged()
         }
     }
 }

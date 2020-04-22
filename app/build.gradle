@@ -102,6 +102,8 @@ kotlin {
             dependencies {
                 implementation kotlin('stdlib-common')
                 implementation "io.ktor:ktor-client-core:$rootProject.ktorVer"
+                implementation "io.ktor:ktor-client-json:$rootProject.ktorVer"
+                implementation "io.ktor:ktor-client-serialization:$rootProject.ktorVer"
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$rootProject.coroutinesVer"
                 implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.11.1"
 
