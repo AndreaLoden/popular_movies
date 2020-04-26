@@ -5,17 +5,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MovieDetailPresenter(private val movieDetailView: MovieDetailView) {
-
-    private val case = MovieDetailCase()
+class MovieDetailPresenter(private val movieDetailView: MovieDetailView, private val movieDetailCase: MovieDetailCase) {
 
     fun start(id: String) {
 
         GlobalScope.apply {
             launch(Background) {
 
-                val reviews = async { case.getMovieReviewsRepo(id) }
-                val trailers = async { case.getMovieTrailersRepo(id) }
+                val reviews = async { movieDetailCase.getMovieReviewsRepo(id) }
+                val trailers = async { movieDetailCase.getMovieTrailersRepo(id) }
 
                 withContext(Main) {
                     movieDetailView.showState(
