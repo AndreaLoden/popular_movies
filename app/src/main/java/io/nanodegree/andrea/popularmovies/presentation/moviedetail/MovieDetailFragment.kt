@@ -41,7 +41,8 @@ class MovieDetailFragment : Fragment(), MovieDetailView {
         if (arguments?.containsKey(ARG_MOVIE) == true) {
             (arguments?.getSerializable(ARG_MOVIE) as Movie).let { itMovie ->
 
-                MovieDetailPresenter(this).start(itMovie.id ?: "")
+                MovieDetailPresenter(this)
+                    .start(itMovie.id ?: "")
 
                 itMovie.originalTitle?.let { (activity as HostActivity).setToolbarTitle(it) }
 

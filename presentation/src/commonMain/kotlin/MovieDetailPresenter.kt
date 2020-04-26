@@ -7,7 +7,8 @@ import kotlinx.coroutines.withContext
 
 class MovieDetailPresenter(private val movieDetailView: MovieDetailView) {
 
-    private val case = CaseProvider.getMovieDetailCase()
+    private val case =
+        CaseProvider.getMovieDetailCase()
 
     fun start(id: String) {
 
@@ -18,7 +19,12 @@ class MovieDetailPresenter(private val movieDetailView: MovieDetailView) {
                 val trailers = async { case.getMovieTrailersRepo(id) }
 
                 withContext(Main) {
-                    movieDetailView.showState(MovieDetailState(reviews.await(), trailers.await()))
+                    movieDetailView.showState(
+                        MovieDetailState(
+                            reviews.await(),
+                            trailers.await()
+                        )
+                    )
                 }
             }
         }
