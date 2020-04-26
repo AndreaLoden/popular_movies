@@ -1,0 +1,45 @@
+/*plugins {
+    kotlin("multiplatform")
+}
+
+kotlin {
+    sourceSets["commonMain"].dependencies {
+        implementation("io.ktor:ktor-client-json:1.2.2")
+        implementation("io.ktor:ktor-client-serialization:1.2.2")
+        api(project(":domain"))
+    }
+}
+*/
+
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform'
+}
+
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlinx-serialization'
+
+
+kotlin {
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-common"
+                implementation "io.ktor:ktor-client-json:1.2.2"
+                implementation "io.ktor:ktor-client-serialization:1.2.2"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.11.1"
+            }
+        }
+
+        jvm("android")
+
+        androidMain {
+            dependencies {
+                implementation kotlin('stdlib')
+                implementation "io.ktor:ktor-client-android:1.2.2"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.1"
+            }
+        }
+
+    }
+}
