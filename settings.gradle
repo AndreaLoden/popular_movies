@@ -1,3 +1,5 @@
 include ':app'
+include ':view'
 include ':presentation'
 include ':domain'
+include ':data'

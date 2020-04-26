@@ -6,8 +6,7 @@ import kotlinx.coroutines.withContext
 
 class MovieListPresenter(private val movieListView: MovieListView) {
 
-    private val case =
-        CaseProvider.getMovieListCase()
+    private val case = MovieListCase()
 
     fun start() {
         GlobalScope.apply {

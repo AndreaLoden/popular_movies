@@ -15,7 +15,7 @@ kotlin {
     iOSTarget("ios") {
         binaries {
             framework {
-                baseName = "SharedCode"
+                baseName = "presentation"
             }
         }
     }
@@ -25,12 +25,12 @@ kotlin {
     sourceSets["commonMain"].dependencies {
         api(project(":domain"))
         implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.0-RC")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.5")
     }
 
     sourceSets["androidMain"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-RC")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5")
     }
 }
 

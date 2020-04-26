@@ -7,8 +7,7 @@ import kotlinx.coroutines.withContext
 
 class MovieDetailPresenter(private val movieDetailView: MovieDetailView) {
 
-    private val case =
-        CaseProvider.getMovieDetailCase()
+    private val case = MovieDetailCase()
 
     fun start(id: String) {
 
