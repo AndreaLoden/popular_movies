@@ -7,16 +7,13 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_host.*
-import io.nanodegree.andrea.popularmovies.data.model.Movie
+import com.jetbrains.handson.mpp.mobile.MovieContainer
 import io.nanodegree.andrea.popularmovies.presentation.MovieNavigator
 import io.nanodegree.andrea.popularmovies.presentation.moviedetail.MovieDetailFragment
 import io.nanodegree.andrea.popularmovies.presentation.movielist.MovieListFragment
+import kotlinx.android.synthetic.main.activity_host.*
 
 class MainActivity : AppCompatActivity(), MovieNavigator, HostActivity {
-
-    // The Idling Resource which will be null in production.
-    private var idlingResource: SimpleIdlingResource? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +22,9 @@ class MainActivity : AppCompatActivity(), MovieNavigator, HostActivity {
 
         if (savedInstanceState == null) {
             supportFragmentManager
-                    .beginTransaction()
-                    .add(R.id.fragment_container, MovieListFragment())
-                    .commit()
+                .beginTransaction()
+                .add(R.id.fragment_container, MovieListFragment())
+                .commit()
         }
     }
 
@@ -42,7 +39,12 @@ class MainActivity : AppCompatActivity(), MovieNavigator, HostActivity {
      * Implementation of [MovieNavigator]
      *********************************************************************************************/
 
-    override fun navigateToMovieDetailFragment(movie: Movie, originFragment: Fragment, posterImageView: View) {
+
+    override fun navigateToMovieDetailFragment(
+        movie: MovieContainer.Movie,
+        originFragment: Fragment,
+        posterImageView: View
+    ) {
         val movieDetailFragment = MovieDetailFragment.newInstance(movie)
 
         movieDetailFragment.sharedElementEnterTransition = DetailsTransition()
@@ -52,23 +54,14 @@ class MainActivity : AppCompatActivity(), MovieNavigator, HostActivity {
         originFragment.sharedElementReturnTransition = DetailsTransition()
 
         supportFragmentManager
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.fragment_container, movieDetailFragment, movie.id)
-                .addToBackStack(movie.id)
-                .addSharedElement(posterImageView, ViewCompat.getTransitionName(posterImageView)
-                        ?: "")
-                .commit()
-    }
-
-    /**
-     * Only called from test, creates and returns a new [SimpleIdlingResource].
-     */
-    @VisibleForTesting
-    override fun getIdlingResource(): SimpleIdlingResource {
-        if (idlingResource == null) {
-            idlingResource = SimpleIdlingResource()
-        }
-        return idlingResource!!
+            .beginTransaction()
+            .setReorderingAllowed(true)
+            .replace(R.id.fragment_container, movieDetailFragment, movie.id)
+            .addToBackStack(movie.id)
+            .addSharedElement(
+                posterImageView, ViewCompat.getTransitionName(posterImageView)
+                    ?: ""
+            )
+            .commit()
     }
 }

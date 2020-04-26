@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.jetbrains.handson.mpp.mobile.ReviewContainer.Review
 import io.nanodegree.andrea.popularmovies.R
-import io.nanodegree.andrea.popularmovies.data.model.Review
 import java.util.*
 
-class ReviewsAdapter(private val context: Context) : RecyclerView.Adapter<ReviewsAdapter.ReviewItemViewHolder>() {
+class ReviewsAdapter(private val context: Context) :
+    RecyclerView.Adapter<ReviewsAdapter.ReviewItemViewHolder>() {
 
     private val reviewList: MutableList<Review> = ArrayList()
 
@@ -36,7 +37,8 @@ class ReviewsAdapter(private val context: Context) : RecyclerView.Adapter<Review
         this.reviewList.addAll(reviews)
     }
 
-    inner class ReviewItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ReviewItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
 
         private val reviewTitle: TextView = itemView.findViewById(R.id.review_title)
         private val reviewContent: TextView = itemView.findViewById(R.id.review_content)
@@ -48,7 +50,8 @@ class ReviewsAdapter(private val context: Context) : RecyclerView.Adapter<Review
 
         fun bind(review: Review) {
             this.review = review
-            reviewTitle.text = String.format("%s %s", context.getString(R.string.detail_review_by), review.author)
+            reviewTitle.text =
+                String.format("%s %s", context.getString(R.string.detail_review_by), review.author)
             reviewContent.text = review.content
         }
 
