@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import io.popularmovies.kmmp.MovieContainer
+import io.popularmovies.kmmp.domain.MovieContainer
 import com.squareup.picasso.Picasso
 import io.nanodegree.andrea.popularmovies.R
 import java.util.*

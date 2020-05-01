@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import io.popularmovies.kmmp.VideoContainer.Video
+import io.popularmovies.kmmp.domain.VideoContainer.Video
 import io.nanodegree.andrea.popularmovies.R
 import java.util.*
 

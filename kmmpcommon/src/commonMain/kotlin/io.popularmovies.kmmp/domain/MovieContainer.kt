@@ -1,4 +1,4 @@
-package io.popularmovies.kmmp
+package io.popularmovies.kmmp.domain
 
 import kotlinx.serialization.Serializable
 

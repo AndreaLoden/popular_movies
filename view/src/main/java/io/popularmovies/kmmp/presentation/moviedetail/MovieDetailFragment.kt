@@ -11,7 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import io.nanodegree.andrea.popularmovies.R
 import io.popularmovies.kmmp.*
+import io.popularmovies.kmmp.domain.MovieContainer
+import io.popularmovies.kmmp.domain.MovieDetailCase
+import io.popularmovies.kmmp.domain.map
 import io.popularmovies.kmmp.model.Movie
+import io.popularmovies.kmmp.presentation.MovieDetailPresenter
+import io.popularmovies.kmmp.presentation.MovieDetailState
+import io.popularmovies.kmmp.presentation.MovieDetailView
 import io.popularmovies.kmmp.presentation.moviedetail.recyclerview.ReviewsAdapter
 import io.popularmovies.kmmp.presentation.moviedetail.recyclerview.TrailersAdapter
 import kotlinx.android.synthetic.main.detail_fragment_content.*
@@ -24,7 +30,7 @@ class MovieDetailFragment : Fragment(),
 
     override val kodein by kodein()
 
-    private val detailCase: MovieDetailCase by instance()
+    private val detailCase: MovieDetailCase by instance<MovieDetailCase>()
 
     private var trailersAdapter: TrailersAdapter? = null
     private var reviewsAdapter: ReviewsAdapter? = null

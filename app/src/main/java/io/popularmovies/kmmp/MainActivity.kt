@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import io.nanodegree.andrea.popularmoviess.R
+import io.popularmovies.kmmp.domain.MovieContainer
 import io.popularmovies.kmmp.presentation.MovieNavigator
 import io.popularmovies.kmmp.presentation.moviedetail.MovieDetailFragment
 import io.popularmovies.kmmp.presentation.movielist.MovieListFragment

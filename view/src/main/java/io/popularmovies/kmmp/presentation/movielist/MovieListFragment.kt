@@ -10,9 +10,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import io.nanodegree.andrea.popularmovies.R
-import io.popularmovies.kmmp.*
+import io.popularmovies.kmmp.HostActivity
+import io.popularmovies.kmmp.domain.MovieContainer
+import io.popularmovies.kmmp.domain.MovieListCase
+import io.popularmovies.kmmp.domain.map
 import io.popularmovies.kmmp.model.Movie
+import io.popularmovies.kmmp.presentation.MovieListPresenter
+import io.popularmovies.kmmp.presentation.MovieListView
 import io.popularmovies.kmmp.presentation.MovieNavigator
+import io.popularmovies.kmmp.presentation.MovieState
 import io.popularmovies.kmmp.presentation.movielist.recyclerview.MovieListAdapter
 import io.popularmovies.kmmp.presentation.movielist.recyclerview.SpacesItemDecoration
 import kotlinx.android.synthetic.main.fragment_movie_list.*
@@ -34,7 +40,7 @@ class MovieListFragment : Fragment(), MovieListAdapter.MovieClickListener,
 
     private val moviesAdapter by lazy { MovieListAdapter(this) }
 
-    private val listCase: MovieListCase by instance()
+    private val listCase: MovieListCase by instance<MovieListCase>()
 
     /**********************************************************************************************
      * Lifecycle callbacks

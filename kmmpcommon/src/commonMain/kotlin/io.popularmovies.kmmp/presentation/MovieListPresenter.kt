@@ -1,10 +1,16 @@
-package io.popularmovies.kmmp
+package io.popularmovies.kmmp.presentation
 
+import io.popularmovies.kmmp.Background
+import io.popularmovies.kmmp.Main
+import io.popularmovies.kmmp.domain.MovieListCase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MovieListPresenter(private val movieListView: MovieListView, private val movieListCase: MovieListCase) {
+class MovieListPresenter(
+    private val movieListView: MovieListView,
+    private val movieListCase: MovieListCase
+) {
 
     fun start() {
         GlobalScope.apply {

@@ -2,15 +2,16 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization")}
+    id("kotlinx-serialization")
+}
 
 kotlin {
     //select iOS target platform depending on the Xcode environment variables
     val iOSTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-    if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-    ::iosArm64
-    else
-    ::iosX64
+        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
+            ::iosArm64
+        else
+            ::iosX64
 
     iOSTarget("ios") {
         binaries {
@@ -23,17 +24,18 @@ kotlin {
     jvm("android")
 
     sourceSets["commonMain"].dependencies {
-        api(project(":domain"))
         implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
         implementation("io.ktor:ktor-client-json:1.2.2")
         implementation("io.ktor:ktor-client-serialization:1.2.2")
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.5")
     }
 
     sourceSets["androidMain"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib")
         implementation("io.ktor:ktor-client-android:1.2.2")
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5")
     }
 
     sourceSets["iosMain"].dependencies {

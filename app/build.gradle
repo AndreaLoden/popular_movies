@@ -44,9 +44,7 @@ android {
 
 dependencies {
     implementation project(':view')
-    implementation project(':presentation')
-    implementation project(':domain')
-    implementation project(':data')
+    implementation project(':kmmpcommon')
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
 }

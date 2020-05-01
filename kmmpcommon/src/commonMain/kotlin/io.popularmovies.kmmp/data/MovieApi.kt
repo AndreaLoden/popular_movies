@@ -1,9 +1,10 @@
-package io.popularmovies.kmmp
+package io.popularmovies.kmmp.data
 
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
 import io.ktor.client.request.get
 import io.ktor.client.request.url
+import io.popularmovies.kmmp.domain.*
 import kotlinx.serialization.json.Json
 
 class MovieApi {

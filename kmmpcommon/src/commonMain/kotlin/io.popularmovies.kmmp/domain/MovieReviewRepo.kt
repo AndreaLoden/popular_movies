@@ -1,4 +1,4 @@
-package io.popularmovies.kmmp
+package io.popularmovies.kmmp.domain
 
 interface MovieReviewRepo {
     suspend fun getMovieReviews(id: String): Either<ApiError, List<ReviewContainer.Review>>

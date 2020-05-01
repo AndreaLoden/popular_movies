@@ -1,4 +1,4 @@
-package io.popularmovies.kmmp
+package io.popularmovies.kmmp.domain
 
 class MovieDetailCase(private val movieReviewRepo: MovieReviewRepo) {
     suspend fun getMovieReviewsRepo(id: String): Either<ApiError, List<ReviewContainer.Review>> =

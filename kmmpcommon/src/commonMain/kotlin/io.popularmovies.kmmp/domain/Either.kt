@@ -1,4 +1,4 @@
-package io.popularmovies.kmmp
+package io.popularmovies.kmmp.domain
 
 sealed class Either<out L, out R> {
     data class Left<out L>(val value: L) : Either<L, Nothing>()
@@ -9,6 +9,7 @@ sealed class Either<out L, out R> {
 
     fun <L> left(a: L) =
         Left(a)
+
     fun <R> right(b: R) =
         Right(b)
 }
